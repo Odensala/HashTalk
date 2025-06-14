@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.hiltPlugin)
 }
 
 android {
@@ -77,12 +78,21 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // RETROFIT for HTTPS com
+    // Retrofit
     implementation(libs.squareup.retrofit)
     implementation(libs.logging.interceptor)
 
-    // MOSHI for JSON serialization/deserialization
+    // Moshi
     implementation(libs.squareup.moshi)
     implementation(libs.squareup.moshi.kotlin)
     implementation(libs.squareup.moshi.converter)
+
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.dagger.compiler)
+    ksp(libs.hilt.compiler)
+
+    // Ksp
+    ksp(libs.hilt.android.compiler)
 }
