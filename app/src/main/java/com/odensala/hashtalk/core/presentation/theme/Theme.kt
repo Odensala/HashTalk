@@ -1,4 +1,4 @@
-package com.odensala.hashtalk.ui.theme
+package com.odensala.hashtalk.core.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
