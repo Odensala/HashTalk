@@ -1,7 +1,9 @@
 package com.odensala.hashtalk.auth.data.datasource
 
+import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
 import com.odensala.hashtalk.core.util.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface FirebaseAuthDataSource {
     suspend fun login(
@@ -16,7 +18,7 @@ interface FirebaseAuthDataSource {
 
     suspend fun logout(): Resource<Unit>
 
-    suspend fun getCurrentUser(): User?
+    fun observeAuthState(): Flow<AuthState>
 
-    fun isUserLoggedIn(): Boolean
+    suspend fun getCurrentUser(): User?
 }

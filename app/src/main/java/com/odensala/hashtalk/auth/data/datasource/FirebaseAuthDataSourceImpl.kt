@@ -1,9 +1,14 @@
 package com.odensala.hashtalk.auth.data.datasource
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.odensala.hashtalk.auth.data.mapper.toUser
+import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
 import com.odensala.hashtalk.core.util.Resource
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthDataSourceImpl(
@@ -48,11 +53,24 @@ class FirebaseAuthDataSourceImpl(
         }
     }
 
+    override fun observeAuthState(): Flow<AuthState> =
+        callbackFlow {
+            Log.d("Auth", "Initial user: ${firebaseAuth.currentUser?.email}")
+            val authStateListener =
+                FirebaseAuth.AuthStateListener { auth ->
+                    val authState =
+                        when (auth.currentUser) {
+                            null -> AuthState.Unauthenticated
+                            else -> AuthState.Authenticated
+                        }
+                    trySend(authState)
+                }
+
+            firebaseAuth.addAuthStateListener(authStateListener)
+            awaitClose { firebaseAuth.removeAuthStateListener(authStateListener) }
+        }
+
     override suspend fun getCurrentUser(): User? {
         return firebaseAuth.currentUser?.toUser()
-    }
-
-    override fun isUserLoggedIn(): Boolean {
-        return firebaseAuth.currentUser != null
     }
 }

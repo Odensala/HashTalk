@@ -1,4 +1,4 @@
-package com.odensala.hashtalk.ui.theme
+package com.odensala.hashtalk.core.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
