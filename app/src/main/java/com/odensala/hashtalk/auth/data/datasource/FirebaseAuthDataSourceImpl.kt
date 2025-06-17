@@ -29,7 +29,7 @@ class FirebaseAuthDataSourceImpl(
         }
     }
 
-    override suspend fun register(
+    override suspend fun signUp(
         email: String,
         password: String,
     ): Resource<User> {

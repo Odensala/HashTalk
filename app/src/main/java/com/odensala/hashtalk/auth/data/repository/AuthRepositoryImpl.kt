@@ -24,11 +24,11 @@ class AuthRepositoryImpl
             return firebaseAuthDataSource.login(email, password)
         }
 
-        override suspend fun register(
+        override suspend fun signUp(
             email: String,
             password: String,
         ): Resource<User> {
-            return firebaseAuthDataSource.register(email, password)
+            return firebaseAuthDataSource.signUp(email, password)
         }
 
         override suspend fun logout(): Resource<Unit> {

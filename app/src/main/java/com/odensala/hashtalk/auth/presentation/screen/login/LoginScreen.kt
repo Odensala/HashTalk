@@ -53,7 +53,7 @@ fun LoginContent(
                 .padding(16.dp),
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(stringResource(R.string.welcome_back), style = MaterialTheme.typography.headlineLarge)
+        Text(stringResource(R.string.hash_talk), style = MaterialTheme.typography.headlineLarge)
 
         Spacer(Modifier.height(16.dp))
 
@@ -102,7 +102,6 @@ fun LoginScreenPreview() {
                 password = "password",
                 isLoading = false,
                 error = "",
-                isAuthenticated = false,
             ),
         onEmailChange = {},
         onPasswordChange = {},

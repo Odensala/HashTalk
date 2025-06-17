@@ -13,7 +13,7 @@ interface AuthRepository {
         password: String,
     ): Resource<User>
 
-    suspend fun register(
+    suspend fun signUp(
         email: String,
         password: String,
     ): Resource<User>

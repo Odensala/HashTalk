@@ -19,7 +19,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavController) {
         }
 
         composable<AuthGraph.SignUpScreen> {
-            SignUpScreen()
+            SignUpScreen(onNavigateBack = { navController.popBackStack() })
         }
     }
 }
