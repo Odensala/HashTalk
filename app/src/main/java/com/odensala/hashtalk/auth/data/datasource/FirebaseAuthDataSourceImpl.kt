@@ -2,9 +2,12 @@ package com.odensala.hashtalk.auth.data.datasource
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
 import com.odensala.hashtalk.auth.data.mapper.toUser
+import com.odensala.hashtalk.auth.domain.error.DataError
 import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
+import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.core.util.Resource
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -29,18 +32,25 @@ class FirebaseAuthDataSourceImpl(
         }
     }
 
-    override suspend fun register(
+    override suspend fun signUp(
         email: String,
         password: String,
-    ): Resource<User> {
+    ): Result<Unit, DataError.Auth> {
         return try {
-            val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
 
-            result.user?.let { firebaseUser ->
-                Resource.Success(firebaseUser.toUser())
-            } ?: Resource.Error("Registration failed: No user data")
+            Result.Success(Unit)
         } catch (e: Exception) {
-            Resource.Error(e.message ?: "Unknown error occurred")
+            if (e is FirebaseAuthException) {
+                when (e.errorCode) {
+                    "ERROR_EMAIL_ALREADY_IN_USE" -> Result.Error(DataError.Auth.EMAIL_ALREADY_IN_USE)
+                    "ERROR_WEAK_PASSWORD" -> Result.Error(DataError.Auth.WEAK_PASSWORD)
+                    "ERROR_INVALID_EMAIL" -> Result.Error(DataError.Auth.INVALID_EMAIL)
+                    else -> Result.Error(DataError.Auth.UNKNOWN)
+                }
+            } else {
+                Result.Error(DataError.Auth.UNKNOWN)
+            }
         }
     }
 
@@ -56,7 +66,7 @@ class FirebaseAuthDataSourceImpl(
     override fun observeAuthState(): Flow<AuthState> =
         callbackFlow {
             Log.d("Auth", "Initial user: ${firebaseAuth.currentUser?.email}")
-            val authStateListener =
+            val listener =
                 FirebaseAuth.AuthStateListener { auth ->
                     val authState =
                         when (auth.currentUser) {
@@ -66,8 +76,8 @@ class FirebaseAuthDataSourceImpl(
                     trySend(authState)
                 }
 
-            firebaseAuth.addAuthStateListener(authStateListener)
-            awaitClose { firebaseAuth.removeAuthStateListener(authStateListener) }
+            firebaseAuth.addAuthStateListener(listener)
+            awaitClose { firebaseAuth.removeAuthStateListener(listener) }
         }
 
     override suspend fun getCurrentUser(): User? {

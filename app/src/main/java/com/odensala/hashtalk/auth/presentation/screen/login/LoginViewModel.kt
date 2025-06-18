@@ -46,7 +46,6 @@ class LoginViewModel
                         _uiState.value =
                             currentState.copy(
                                 isLoading = false,
-                                isAuthenticated = true,
                                 error = null,
                             )
                     }

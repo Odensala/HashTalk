@@ -1,9 +1,11 @@
 package com.odensala.hashtalk.auth.data.repository
 
 import com.odensala.hashtalk.auth.data.datasource.FirebaseAuthDataSource
+import com.odensala.hashtalk.auth.domain.error.DataError
 import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
+import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -24,11 +26,11 @@ class AuthRepositoryImpl
             return firebaseAuthDataSource.login(email, password)
         }
 
-        override suspend fun register(
+        override suspend fun signUp(
             email: String,
             password: String,
-        ): Resource<User> {
-            return firebaseAuthDataSource.register(email, password)
+        ): Result<Unit, DataError.Auth> {
+            return firebaseAuthDataSource.signUp(email, password)
         }
 
         override suspend fun logout(): Resource<Unit> {
