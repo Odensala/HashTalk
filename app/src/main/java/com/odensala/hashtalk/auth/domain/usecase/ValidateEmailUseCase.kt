@@ -1,26 +1,22 @@
 package com.odensala.hashtalk.auth.domain.usecase
 
+import com.odensala.hashtalk.auth.domain.error.EmailError
+import com.odensala.hashtalk.core.domain.error.Result
 import javax.inject.Inject
 
 class ValidateEmailUseCase
     @Inject
     constructor() {
-        operator fun invoke(email: String): ValidationResult {
+        operator fun invoke(email: String): Result<Unit, EmailError> {
             if (email.isBlank()) {
-                return ValidationResult(
-                    successful = false,
-                    errorMessage = "Email cannot be empty",
-                )
+                return Result.Error(EmailError.EMPTY)
             }
 
             val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
             if (!email.matches(emailPattern.toRegex())) {
-                return ValidationResult(
-                    successful = false,
-                    errorMessage = "Please enter a valid email address",
-                )
+                return Result.Error(EmailError.INVALID)
             }
 
-            return ValidationResult(successful = true)
+            return Result.Success(Unit)
         }
     }

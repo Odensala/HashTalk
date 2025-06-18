@@ -1,12 +1,16 @@
 package com.odensala.hashtalk.auth.presentation.screen.signup
 
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.EmailFieldError
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.GeneralSignUpError
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.PasswordFieldError
+
 data class SignUpUiState(
     val email: String = "",
-    val emailError: String? = null,
     val password: String = "",
-    val passwordError: String? = null,
     val repeatPassword: String = "",
-    val repeatPasswordError: String? = null,
+    val emailError: EmailFieldError? = null,
+    val passwordError: PasswordFieldError? = null,
+    val repeatPasswordError: PasswordFieldError? = null,
     val isLoading: Boolean = false,
-    val error: String = "",
+    val generalError: GeneralSignUpError? = null,
 )

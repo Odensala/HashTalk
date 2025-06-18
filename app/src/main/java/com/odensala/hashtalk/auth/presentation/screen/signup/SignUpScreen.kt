@@ -25,6 +25,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.auth.presentation.components.AuthTextField
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.EmailFieldError
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.GeneralSignUpError
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.PasswordFieldError
 import com.odensala.hashtalk.core.presentation.components.ErrorMessage
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
 
@@ -95,7 +98,7 @@ fun SignUpContent(
             )
 
             uiState.emailError?.let { error ->
-                ErrorMessage(error = error)
+                ErrorMessage(error = stringResource(emailFieldErrorMessageRes(error)))
             }
 
             Spacer(Modifier.height(8.dp))
@@ -110,7 +113,7 @@ fun SignUpContent(
             )
 
             uiState.passwordError?.let { error ->
-                ErrorMessage(error = error)
+                ErrorMessage(error = stringResource(passwordFieldErrorMessageRes(error)))
             }
 
             // Repeat password field
@@ -123,11 +126,13 @@ fun SignUpContent(
             )
 
             uiState.repeatPasswordError?.let { error ->
-                ErrorMessage(error = error)
+                ErrorMessage(error = stringResource(passwordFieldErrorMessageRes(error)))
             }
 
             // General error message
-            ErrorMessage(error = uiState.error)
+            uiState.generalError?.let { error ->
+                ErrorMessage(error = stringResource(mapGeneralSignUpErrorToUi(error)))
+            }
 
             Spacer(Modifier.height(16.dp))
 
@@ -140,6 +145,30 @@ fun SignUpContent(
     }
 }
 
+fun mapGeneralSignUpErrorToUi(error: GeneralSignUpError): Int =
+    when (error) {
+        GeneralSignUpError.Unknown -> R.string.unknown_error
+        GeneralSignUpError.Network -> R.string.network_error
+    }
+
+fun emailFieldErrorMessageRes(error: EmailFieldError): Int =
+    when (error) {
+        EmailFieldError.Empty -> R.string.email_empty
+        EmailFieldError.Invalid -> R.string.email_invalid_format
+        EmailFieldError.AlreadyInUse -> R.string.email_already_in_use
+        EmailFieldError.Unknown -> R.string.unknown_error
+    }
+
+fun passwordFieldErrorMessageRes(error: PasswordFieldError): Int =
+    when (error) {
+        PasswordFieldError.Empty -> R.string.password_empty
+        PasswordFieldError.TooShort -> R.string.password_too_short
+        PasswordFieldError.NotMatching -> R.string.passwords_do_not_match
+        PasswordFieldError.Weak -> R.string.password_requires_one_letter_one_digit
+        PasswordFieldError.Invalid -> R.string.password_invalid
+        PasswordFieldError.Unknown -> R.string.unknown_error
+    }
+
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
@@ -149,7 +178,6 @@ fun SignUpScreenPreview() {
                 email = "doraemon@gmail.com",
                 password = "password",
                 isLoading = false,
-                error = "",
             ),
         onEmailChange = {},
         onPasswordChange = {},

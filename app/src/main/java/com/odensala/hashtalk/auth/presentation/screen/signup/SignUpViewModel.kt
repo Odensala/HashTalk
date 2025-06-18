@@ -2,12 +2,12 @@ package com.odensala.hashtalk.auth.presentation.screen.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.odensala.hashtalk.auth.domain.error.DataError
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
-import com.odensala.hashtalk.auth.domain.usecase.ValidateEmailUseCase
-import com.odensala.hashtalk.auth.domain.usecase.ValidatePasswordUseCase
-import com.odensala.hashtalk.auth.domain.usecase.ValidateRepeatPasswordUseCase
-import com.odensala.hashtalk.auth.domain.usecase.ValidationResult
-import com.odensala.hashtalk.core.util.Resource
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.EmailFieldError
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.GeneralSignUpError
+import com.odensala.hashtalk.auth.presentation.screen.signup.error.PasswordFieldError
+import com.odensala.hashtalk.core.domain.error.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,138 +17,106 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel
-    @Inject
-    constructor(
-        private val validateEmailUseCase: ValidateEmailUseCase,
-        private val validatePasswordUseCase: ValidatePasswordUseCase,
-        private val validateRepeatPasswordUseCase: ValidateRepeatPasswordUseCase,
-        private val authRepository: AuthRepository,
-    ) : ViewModel() {
-        private val _uiState = MutableStateFlow(SignUpUiState())
-        val uiState = _uiState.asStateFlow()
+@Inject
+constructor(
+    private val formValidator: SignUpValidator,
+    private val authRepository: AuthRepository,
+) : ViewModel() {
+    private val _uiState = MutableStateFlow(SignUpUiState())
+    val uiState = _uiState.asStateFlow()
 
-        fun onEmailChange(email: String) {
-            _uiState.update { state ->
-                state.copy(
-                    email = email,
-                )
-            }
+    fun onEmailChange(email: String) {
+        _uiState.update { state ->
+            state.copy(
+                email = email,
+                emailError = null,
+            )
+        }
+    }
+
+    fun onPasswordChange(password: String) {
+        _uiState.update { state ->
+            state.copy(
+                password = password,
+                passwordError = null,
+                repeatPasswordError = null,
+            )
+        }
+    }
+
+    fun onRepeatPasswordChange(repeatPassword: String) {
+        _uiState.update { state ->
+            state.copy(
+                repeatPassword = repeatPassword,
+                repeatPasswordError = null,
+            )
+        }
+    }
+
+    fun onSignUpClick() {
+        val currentState = _uiState.value
+
+        // Validate all fields and show errors
+        val emailError = formValidator.validateEmail(currentState.email)
+        val passwordError = formValidator.validatePassword(currentState.password)
+        val repeatPasswordError =
+            formValidator.validateRepeatPassword(
+                currentState.password,
+                currentState.repeatPassword,
+            )
+
+        _uiState.update { state ->
+            state.copy(
+                emailError = emailError,
+                passwordError = passwordError,
+                repeatPasswordError = repeatPasswordError,
+                generalError = null,
+            )
         }
 
-        fun onPasswordChange(password: String) {
-            _uiState.update { state ->
-                state.copy(
-                    password = password,
-                    passwordError = null,
-                )
-            }
-        }
-
-        fun onRepeatPasswordChange(repeatPassword: String) {
-            _uiState.update { state ->
-                state.copy(
-                    repeatPassword = repeatPassword,
-                    repeatPasswordError = null,
-                )
-            }
-        }
-
-        fun onSignUpClick() {
-            val emailResult = validateEmail()
-            val passwordResult = validatePassword()
-            val repeatPasswordResult = validateRepeatPassword()
-
-            val hasError =
-                listOf(
-                    emailResult,
-                    passwordResult,
-                    repeatPasswordResult,
-                ).any { !it.successful }
-
-            if (hasError) {
-                return
-            }
-
-            // If all validations pass, proceed with sign up
+        if (emailError == null && passwordError == null && repeatPasswordError == null) {
             signUp()
         }
+    }
 
-        private fun validateEmail(): ValidationResult {
-            val result = validateEmailUseCase(_uiState.value.email)
+    private fun signUp() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true) }
 
-            _uiState.update { state ->
-                state.copy(
-                    emailError = result.errorMessage,
-                )
-            }
-
-            return result
-        }
-
-        private fun validatePassword(): ValidationResult {
-            val result = validatePasswordUseCase(_uiState.value.password)
-
-            _uiState.update { state ->
-                state.copy(
-                    passwordError = result.errorMessage,
-                )
-            }
-
-            return result
-        }
-
-        private fun validateRepeatPassword(): ValidationResult {
             val result =
-                validateRepeatPasswordUseCase(
+                authRepository.signUp(
+                    _uiState.value.email,
                     _uiState.value.password,
-                    _uiState.value.repeatPassword,
                 )
 
-            _uiState.update { state ->
-                state.copy(
-                    repeatPasswordError = result.errorMessage,
-                )
-            }
+            _uiState.update { it.copy(isLoading = false) }
 
-            return result
-        }
-
-        private fun signUp() {
-            val currentState = _uiState.value
-
-            viewModelScope.launch {
-                _uiState.update { state ->
-                    state.copy(
-                        isLoading = true,
-                        error = "",
-                    )
+            when (result) {
+                is Result.Success -> {
                 }
 
-                val result =
-                    authRepository.signUp(
-                        currentState.email,
-                        currentState.password,
-                    )
-
-                when (result) {
-                    is Resource.Success -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                isLoading = false,
-                                error = "",
-                            )
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        _uiState.update { state ->
-                            state.copy(
-                                isLoading = false,
-                                error = result.message ?: "Sign up failed",
-                            )
-                        }
-                    }
-                }
+                is Result.Error -> handleSignUpError(result.error)
             }
         }
     }
+
+    private fun handleSignUpError(error: DataError.Auth) {
+        when (error) {
+            DataError.Auth.EMAIL_ALREADY_IN_USE -> {
+                _uiState.update { it.copy(emailError = EmailFieldError.AlreadyInUse) }
+            }
+
+            DataError.Auth.INVALID_EMAIL -> {
+                _uiState.update { it.copy(emailError = EmailFieldError.Invalid) }
+            }
+
+            DataError.Auth.WEAK_PASSWORD -> {
+                _uiState.update { it.copy(passwordError = PasswordFieldError.Weak) }
+            }
+
+            DataError.Auth.UNKNOWN -> {
+                _uiState.update { it.copy(generalError = GeneralSignUpError.Unknown) }
+            }
+        }
+    }
+}

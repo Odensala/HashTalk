@@ -1,5 +1,7 @@
 package com.odensala.hashtalk.auth.domain.usecase
 
+import com.odensala.hashtalk.auth.domain.error.PasswordError
+import com.odensala.hashtalk.core.domain.error.Result
 import javax.inject.Inject
 
 class ValidateRepeatPasswordUseCase
@@ -8,14 +10,13 @@ class ValidateRepeatPasswordUseCase
         operator fun invoke(
             password: String,
             repeatPassword: String,
-        ): ValidationResult {
+        ): Result<Unit, PasswordError> {
             if (repeatPassword != password) {
-                return ValidationResult(
-                    successful = false,
-                    errorMessage = "Passwords do not match",
+                return Result.Error(
+                    PasswordError.NOT_MATCHING,
                 )
             }
 
-            return ValidationResult(successful = true)
+            return Result.Success(Unit)
         }
     }
