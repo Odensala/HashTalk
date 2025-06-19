@@ -17,4 +17,13 @@
     <string name="password_empty">Password field is empty</string>
     <string name="password_invalid">Invalid password</string>
     <string name="network_error">A network error occurred</string>
+    <string name="back_to_timeline_description">Back</string>
+    <string name="post_button_text">Post</string>
+    <string name="post_placeholder">What\'s up?</string>
+    <string name="back_button_description">Back</string>
+    <string name="logout">Logout</string>
+    <string name="timeline">Timeline</string>
+    <string name="add_post">Add Post</string>
+    <string name="empty_posts">Hmm… it\'s kind of empty in here.</string>
+    <string name="post_image">Post image</string>
 </resources>

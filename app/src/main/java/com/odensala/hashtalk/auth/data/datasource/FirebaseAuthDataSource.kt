@@ -20,7 +20,7 @@ interface FirebaseAuthDataSource {
 
     suspend fun logout(): Resource<Unit>
 
-    fun observeAuthState(): Flow<AuthState>
+    fun getAuthStateFlow(): Flow<AuthState>
 
     suspend fun getCurrentUser(): User?
 }

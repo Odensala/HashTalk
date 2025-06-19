@@ -63,7 +63,7 @@ class FirebaseAuthDataSourceImpl(
         }
     }
 
-    override fun observeAuthState(): Flow<AuthState> =
+    override fun getAuthStateFlow(): Flow<AuthState> =
         callbackFlow {
             Log.d("Auth", "Initial user: ${firebaseAuth.currentUser?.email}")
             val listener =

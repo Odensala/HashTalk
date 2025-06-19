@@ -1,6 +1,5 @@
 package com.odensala.hashtalk.core.presentation.components
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,7 +20,7 @@ fun LoadingButton(
     Button(
         onClick = onClick,
         enabled = enabled && !isLoading,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
     ) {
         if (isLoading) {
             CircularProgressIndicator(

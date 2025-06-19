@@ -13,31 +13,31 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl
     @Inject
-    constructor(private val firebaseAuthDataSource: FirebaseAuthDataSource) :
+    constructor(private val dataSource: FirebaseAuthDataSource) :
     AuthRepository {
         override val authState: Flow<AuthState> =
-            firebaseAuthDataSource.observeAuthState()
+            dataSource.getAuthStateFlow()
                 .distinctUntilChanged()
 
         override suspend fun login(
             email: String,
             password: String,
         ): Resource<User> {
-            return firebaseAuthDataSource.login(email, password)
+            return dataSource.login(email, password)
         }
 
         override suspend fun signUp(
             email: String,
             password: String,
         ): Result<Unit, DataError.Auth> {
-            return firebaseAuthDataSource.signUp(email, password)
+            return dataSource.signUp(email, password)
         }
 
         override suspend fun logout(): Resource<Unit> {
-            return firebaseAuthDataSource.logout()
+            return dataSource.logout()
         }
 
         override suspend fun getCurrentUser(): User? {
-            return firebaseAuthDataSource.getCurrentUser()
+            return dataSource.getCurrentUser()
         }
     }
