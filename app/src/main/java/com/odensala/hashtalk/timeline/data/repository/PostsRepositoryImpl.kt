@@ -1,6 +1,8 @@
 package com.odensala.hashtalk.timeline.data.repository
 
 import com.odensala.hashtalk.auth.data.datasource.FirebaseAuthDataSource
+import com.odensala.hashtalk.core.domain.error.DataError
+import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.timeline.data.datasource.PostsRemoteDataSource
 import com.odensala.hashtalk.timeline.data.model.Post
 import com.odensala.hashtalk.timeline.domain.repository.PostsRepository
@@ -14,11 +16,11 @@ class PostsRepositoryImpl
         private val fireStore: PostsRemoteDataSource,
         private val firebaseAuth: FirebaseAuthDataSource,
     ) : PostsRepository {
-        override val posts: Flow<List<Post>> =
+        override val posts: Flow<Result<List<Post>, DataError.PostError>> =
             fireStore.getPostsFlow()
                 .distinctUntilChanged()
 
-        override suspend fun addPost(post: String) {
+        override suspend fun addPost(post: String): Result<Unit, DataError.PostError> {
             val currentUser = firebaseAuth.getCurrentUser()
             if (currentUser != null) {
                 val post =
@@ -28,8 +30,9 @@ class PostsRepositoryImpl
                         content = post,
                     )
 
-                fireStore.addPost(post)
+                return fireStore.addPost(post)
             } else {
+                return Result.Error(DataError.PostError.PERMISSION_DENIED)
             }
         }
     }
