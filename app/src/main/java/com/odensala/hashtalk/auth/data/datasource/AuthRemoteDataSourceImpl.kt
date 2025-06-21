@@ -4,9 +4,9 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.odensala.hashtalk.auth.data.mapper.toUser
-import com.odensala.hashtalk.auth.domain.error.DataError
 import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
+import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.core.util.Resource
 import kotlinx.coroutines.channels.awaitClose
@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
-class FirebaseAuthDataSourceImpl(
+class AuthRemoteDataSourceImpl(
     private val firebaseAuth: FirebaseAuth,
-) : FirebaseAuthDataSource {
+) : AuthRemoteDataSource {
     override suspend fun login(
         email: String,
         password: String,
@@ -63,7 +63,7 @@ class FirebaseAuthDataSourceImpl(
         }
     }
 
-    override fun observeAuthState(): Flow<AuthState> =
+    override fun getAuthStateFlow(): Flow<AuthState> =
         callbackFlow {
             Log.d("Auth", "Initial user: ${firebaseAuth.currentUser?.email}")
             val listener =

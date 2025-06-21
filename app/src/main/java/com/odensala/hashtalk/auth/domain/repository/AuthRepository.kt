@@ -1,8 +1,8 @@
 package com.odensala.hashtalk.auth.domain.repository
 
-import com.odensala.hashtalk.auth.domain.error.DataError
 import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
+import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.core.util.Resource
 import kotlinx.coroutines.flow.Flow

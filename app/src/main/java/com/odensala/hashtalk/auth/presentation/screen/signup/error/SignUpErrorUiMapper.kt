@@ -3,7 +3,7 @@ package com.odensala.hashtalk.auth.presentation.screen.signup.error
 import com.odensala.hashtalk.auth.domain.error.EmailError
 import com.odensala.hashtalk.auth.domain.error.PasswordError
 
-fun mapDomainEmailErrorToUi(domainError: EmailError): EmailFieldError =
+fun mapEmailErrorToUi(domainError: EmailError): EmailFieldError =
     when (domainError) {
         EmailError.EMPTY -> EmailFieldError.Empty
         EmailError.INVALID -> EmailFieldError.Invalid
@@ -11,7 +11,7 @@ fun mapDomainEmailErrorToUi(domainError: EmailError): EmailFieldError =
         EmailError.UNKNOWN -> EmailFieldError.Unknown
     }
 
-fun mapDomainPasswordErrorToUi(domainError: PasswordError): PasswordFieldError =
+fun mapPasswordErrorToUi(domainError: PasswordError): PasswordFieldError =
     when (domainError) {
         PasswordError.EMPTY -> PasswordFieldError.Empty
         PasswordError.TOO_SHORT -> PasswordFieldError.TooShort

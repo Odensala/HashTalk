@@ -1,8 +1,8 @@
 package com.odensala.hashtalk.auth.di
 
 import com.google.firebase.auth.FirebaseAuth
-import com.odensala.hashtalk.auth.data.datasource.FirebaseAuthDataSource
-import com.odensala.hashtalk.auth.data.datasource.FirebaseAuthDataSourceImpl
+import com.odensala.hashtalk.auth.data.datasource.AuthRemoteDataSource
+import com.odensala.hashtalk.auth.data.datasource.AuthRemoteDataSourceImpl
 import com.odensala.hashtalk.auth.data.repository.AuthRepositoryImpl
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
 import dagger.Module
@@ -20,9 +20,9 @@ object AuthModule {
 
     @Provides
     @Singleton
-    fun provideFirebaseAuthDataSource(firebaseAuth: FirebaseAuth): FirebaseAuthDataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
+    fun provideFirebaseAuthDataSource(firebaseAuth: FirebaseAuth): AuthRemoteDataSource = AuthRemoteDataSourceImpl(firebaseAuth)
 
     @Provides
     @Singleton
-    fun provideAuthRepository(firebaseAuthDataSource: FirebaseAuthDataSource): AuthRepository = AuthRepositoryImpl(firebaseAuthDataSource)
+    fun provideAuthRepository(authRemoteDataSource: AuthRemoteDataSource): AuthRepository = AuthRepositoryImpl(authRemoteDataSource)
 }

@@ -1,13 +1,13 @@
 package com.odensala.hashtalk.auth.data.datasource
 
-import com.odensala.hashtalk.auth.domain.error.DataError
 import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
+import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 
-interface FirebaseAuthDataSource {
+interface AuthRemoteDataSource {
     suspend fun login(
         email: String,
         password: String,
@@ -20,7 +20,7 @@ interface FirebaseAuthDataSource {
 
     suspend fun logout(): Resource<Unit>
 
-    fun observeAuthState(): Flow<AuthState>
+    fun getAuthStateFlow(): Flow<AuthState>
 
     suspend fun getCurrentUser(): User?
 }
