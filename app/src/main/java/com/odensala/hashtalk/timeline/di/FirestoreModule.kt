@@ -1,7 +1,7 @@
 package com.odensala.hashtalk.timeline.di
 
 import com.google.firebase.firestore.FirebaseFirestore
-import com.odensala.hashtalk.auth.data.datasource.FirebaseAuthDataSource
+import com.odensala.hashtalk.auth.data.datasource.AuthRemoteDataSource
 import com.odensala.hashtalk.timeline.data.datasource.PostsRemoteDataSource
 import com.odensala.hashtalk.timeline.data.datasource.PostsRemoteDatasourceImpl
 import com.odensala.hashtalk.timeline.data.repository.PostsRepositoryImpl
@@ -28,6 +28,6 @@ object FirestoreModule {
     @Singleton
     fun provideFirestoreRepository(
         postsRemoteDataSource: PostsRemoteDataSource,
-        authDataSource: FirebaseAuthDataSource,
-    ): PostsRepository = PostsRepositoryImpl(postsRemoteDataSource, authDataSource)
+        authRemoteDataSource: AuthRemoteDataSource,
+    ): PostsRepository = PostsRepositoryImpl(postsRemoteDataSource, authRemoteDataSource)
 }

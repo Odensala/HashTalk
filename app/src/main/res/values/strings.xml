@@ -12,7 +12,7 @@
     <string name="passwords_do_not_match">Passwords do not match</string>
     <string name="password_requires_one_letter_one_digit">Password must contain at least one letter and one digit</string>
     <string name="password_too_short">Password must be at least 8 characters long</string>
-    <string name="unknown_error">Unknown error</string>
+    <string name="unknown_error">Something went wrong, please try again.</string>
     <string name="email_already_in_use">Email is already in use</string>
     <string name="password_empty">Password field is empty</string>
     <string name="password_invalid">Invalid password</string>
@@ -26,4 +26,12 @@
     <string name="add_post">Add Post</string>
     <string name="empty_posts">Hmm… it\'s kind of empty in here.</string>
     <string name="post_image">Post image</string>
+    <string name="confirm_logout">Confirm Logout</string>
+    <string name="confirm_logout_desc">Are you sure you want to log out?</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_image">Add image</string>
+    <string name="selected_image">Selected image</string>
+    <string name="remove_image">Remove image</string>
+    <string name="unauthorized_error">Unathorized error</string>
+    <string name="unavailable_error">Service unavailable. Please try again later.</string>
 </resources>

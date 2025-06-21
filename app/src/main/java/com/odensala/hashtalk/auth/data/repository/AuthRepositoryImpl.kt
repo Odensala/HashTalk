@@ -1,6 +1,6 @@
 package com.odensala.hashtalk.auth.data.repository
 
-import com.odensala.hashtalk.auth.data.datasource.FirebaseAuthDataSource
+import com.odensala.hashtalk.auth.data.datasource.AuthRemoteDataSource
 import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl
     @Inject
-    constructor(private val dataSource: FirebaseAuthDataSource) :
+    constructor(private val dataSource: AuthRemoteDataSource) :
     AuthRepository {
         override val authState: Flow<AuthState> =
             dataSource.getAuthStateFlow()

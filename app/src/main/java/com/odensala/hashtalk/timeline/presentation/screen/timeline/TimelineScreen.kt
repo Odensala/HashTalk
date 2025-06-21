@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
@@ -17,8 +18,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +33,8 @@ import com.google.firebase.Timestamp
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.core.presentation.components.CenteredContent
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
+import com.odensala.hashtalk.timeline.presentation.components.LogoutDialog
+import com.odensala.hashtalk.timeline.presentation.error.PostUiError
 
 @Composable
 fun TimelineScreen(
@@ -35,11 +42,21 @@ fun TimelineScreen(
     onNavigateToAddPost: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     TimelineContent(
         uiState = uiState,
-        onLogout = viewModel::logout,
+        onLogout = { showLogoutDialog = true },
         onNavigateToAddPost = onNavigateToAddPost,
+    )
+
+    LogoutDialog(
+        showDialog = showLogoutDialog,
+        onConfirm = {
+            showLogoutDialog = false
+            viewModel.logout()
+        },
+        onDismiss = { showLogoutDialog = false },
     )
 }
 
@@ -51,6 +68,14 @@ fun TimelineContent(
     onLogout: () -> Unit = {},
     onNavigateToAddPost: () -> Unit = {},
 ) {
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(Unit) {
+        if (uiState.posts.isNotEmpty()) {
+            listState.animateScrollToItem(0)
+        }
+    }
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -97,8 +122,22 @@ fun TimelineContent(
                     }
                 }
 
+                uiState.error != null -> {
+                    CenteredContent {
+                        Text(
+                            text =
+                                when (uiState.error) {
+                                    PostUiError.Unauthorized -> stringResource(R.string.unauthorized_error)
+                                    PostUiError.Unavailable -> stringResource(R.string.unavailable_error)
+                                    PostUiError.Unknown -> stringResource(R.string.unknown_error)
+                                },
+                        )
+                    }
+                }
+
                 else -> {
                     LazyColumn(
+                        state = listState,
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp),

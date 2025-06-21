@@ -13,4 +13,8 @@ sealed interface DataError : Failure {
         PERMISSION_DENIED,
         UNKNOWN,
     }
+
+    enum class ImageError : DataError {
+        UPLOAD_FAILED,
+    }
 }

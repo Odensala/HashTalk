@@ -7,7 +7,7 @@ import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 
-interface FirebaseAuthDataSource {
+interface AuthRemoteDataSource {
     suspend fun login(
         email: String,
         password: String,

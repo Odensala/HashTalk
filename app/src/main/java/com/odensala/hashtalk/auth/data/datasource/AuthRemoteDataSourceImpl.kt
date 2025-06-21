@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
-class FirebaseAuthDataSourceImpl(
+class AuthRemoteDataSourceImpl(
     private val firebaseAuth: FirebaseAuth,
-) : FirebaseAuthDataSource {
+) : AuthRemoteDataSource {
     override suspend fun login(
         email: String,
         password: String,

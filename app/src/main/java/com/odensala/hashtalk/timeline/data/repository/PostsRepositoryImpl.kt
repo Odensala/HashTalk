@@ -1,6 +1,6 @@
 package com.odensala.hashtalk.timeline.data.repository
 
-import com.odensala.hashtalk.auth.data.datasource.FirebaseAuthDataSource
+import com.odensala.hashtalk.auth.data.datasource.AuthRemoteDataSource
 import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.timeline.data.datasource.PostsRemoteDataSource
@@ -13,24 +13,28 @@ import javax.inject.Inject
 class PostsRepositoryImpl
     @Inject
     constructor(
-        private val fireStore: PostsRemoteDataSource,
-        private val firebaseAuth: FirebaseAuthDataSource,
+        private val postsRemoteDataSource: PostsRemoteDataSource,
+        private val authRemoteDataSource: AuthRemoteDataSource,
     ) : PostsRepository {
         override val posts: Flow<Result<List<Post>, DataError.PostError>> =
-            fireStore.getPostsFlow()
+            postsRemoteDataSource.getPostsFlow()
                 .distinctUntilChanged()
 
-        override suspend fun addPost(post: String): Result<Unit, DataError.PostError> {
-            val currentUser = firebaseAuth.getCurrentUser()
+        override suspend fun addPost(
+            postContent: String,
+            imageUrl: String?,
+        ): Result<Unit, DataError.PostError> {
+            val currentUser = authRemoteDataSource.getCurrentUser()
             if (currentUser != null) {
                 val post =
                     Post(
                         userId = currentUser.uid,
+                        imageUrl = imageUrl,
                         userEmail = currentUser.email,
-                        content = post,
+                        content = postContent,
                     )
 
-                return fireStore.addPost(post)
+                return postsRemoteDataSource.addPost(post)
             } else {
                 return Result.Error(DataError.PostError.PERMISSION_DENIED)
             }

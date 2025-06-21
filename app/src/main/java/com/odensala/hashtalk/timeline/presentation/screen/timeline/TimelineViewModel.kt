@@ -2,7 +2,9 @@ package com.odensala.hashtalk.timeline.presentation.screen.timeline
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.odensala.hashtalk.auth.domain.repository.AuthRepository
 import com.odensala.hashtalk.core.domain.error.Result
+import com.odensala.hashtalk.timeline.data.model.Post
 import com.odensala.hashtalk.timeline.domain.repository.PostsRepository
 import com.odensala.hashtalk.timeline.presentation.error.mapPostErrorToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,12 +12,13 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class TimelineViewModel
     @Inject
-    constructor(private val postsRepository: PostsRepository) : ViewModel() {
+    constructor(private val postsRepository: PostsRepository, private val authRepository: AuthRepository) : ViewModel() {
         val uiState: StateFlow<TimelineUiState> =
             postsRepository.posts
                 .map { result ->
@@ -24,13 +27,7 @@ class TimelineViewModel
                             TimelineUiState(
                                 posts =
                                     result.data.map { post ->
-                                        PostUiModel(
-                                            id = post.id,
-                                            userEmail = post.userEmail,
-                                            content = post.content,
-                                            imageUrl = post.imageUrl,
-                                            timestamp = post.timestamp,
-                                        )
+                                        post.toUiModel()
                                     },
                                 isLoading = false,
                                 error = null,
@@ -49,5 +46,17 @@ class TimelineViewModel
                 )
 
         fun logout() {
+            viewModelScope.launch {
+                authRepository.logout()
+            }
         }
+
+        private fun Post.toUiModel() =
+            PostUiModel(
+                id = id,
+                userEmail = userEmail,
+                content = content,
+                imageUrl = imageUrl,
+                timestamp = timestamp,
+            )
     }
