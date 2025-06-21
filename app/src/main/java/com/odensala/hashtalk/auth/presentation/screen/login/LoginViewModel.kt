@@ -3,8 +3,8 @@ package com.odensala.hashtalk.auth.presentation.screen.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
-import com.odensala.hashtalk.auth.presentation.error.AuthUiError
-import com.odensala.hashtalk.auth.presentation.error.mapLoginErrorToUi
+import com.odensala.hashtalk.auth.presentation.screen.login.error.AuthUiError
+import com.odensala.hashtalk.auth.presentation.screen.login.error.mapLoginErrorToUi
 import com.odensala.hashtalk.core.domain.error.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

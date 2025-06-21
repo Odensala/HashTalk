@@ -6,10 +6,10 @@ import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
 import com.odensala.hashtalk.core.domain.error.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import javax.inject.Inject
 
 @HiltViewModel
 class AppViewModel @Inject constructor(private val authRepository: AuthRepository) : ViewModel() {

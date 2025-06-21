@@ -11,6 +11,7 @@ class ValidateEmailUseCase @Inject constructor() {
         }
 
         val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+
         if (!email.matches(emailPattern.toRegex())) {
             return Result.Error(EmailError.INVALID)
         }

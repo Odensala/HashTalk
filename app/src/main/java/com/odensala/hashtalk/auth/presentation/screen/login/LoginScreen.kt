@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.auth.presentation.components.AuthTextField
-import com.odensala.hashtalk.auth.presentation.error.AuthUiError
+import com.odensala.hashtalk.auth.presentation.screen.login.error.AuthUiError
 import com.odensala.hashtalk.core.presentation.components.ErrorMessage
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
 

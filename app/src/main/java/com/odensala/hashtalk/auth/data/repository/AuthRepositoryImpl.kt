@@ -6,9 +6,9 @@ import com.odensala.hashtalk.auth.domain.model.User
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
 import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
+import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authRemoteDataSource: AuthRemoteDataSource
