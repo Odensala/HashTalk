@@ -17,7 +17,7 @@ fun HashTalkApp(authViewModel: AppViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     val authState by authViewModel.authState.collectAsState()
 
-    // TODO: Can display a splash screen here instead for better UX
+    // TODO: Can display a splash screen during CheckingAuthentication for better UX
     val startDestination: Any =
         when (authState) {
             AuthState.Authenticated -> TimelineGraph

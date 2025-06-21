@@ -8,12 +8,12 @@ import com.odensala.hashtalk.timeline.data.model.Post
 import com.odensala.hashtalk.timeline.domain.repository.PostsRepository
 import com.odensala.hashtalk.timeline.presentation.error.mapPostErrorToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class TimelineViewModel @Inject constructor(

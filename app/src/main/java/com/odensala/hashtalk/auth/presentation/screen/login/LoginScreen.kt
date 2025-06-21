@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.auth.presentation.components.AuthTextField
+import com.odensala.hashtalk.auth.presentation.error.AuthUiError
 import com.odensala.hashtalk.core.presentation.components.ErrorMessage
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
 
@@ -73,7 +74,18 @@ fun LoginContent(
             enabled = !uiState.isLoading
         )
 
-        ErrorMessage(error = uiState.error)
+        uiState.error?.let { error ->
+            ErrorMessage(
+                error = when (error) {
+                    AuthUiError.FieldEmpty -> stringResource(R.string.field_empty_error)
+                    AuthUiError.InvalidCredentials -> stringResource(R.string.invalid_credentials_error)
+                    AuthUiError.Unknown -> stringResource(R.string.unknown_error)
+                    AuthUiError.EmailAlreadyInUse -> stringResource(R.string.email_already_in_use_error)
+                    AuthUiError.UserNotFound -> stringResource(R.string.user_not_found_error)
+                    AuthUiError.WeakPassword -> stringResource(R.string.weak_password_error)
+                }
+            )
+        }
 
         Spacer(Modifier.height(16.dp))
 
@@ -99,7 +111,7 @@ fun LoginScreenPreview() {
             email = "doraemon@gmail.com",
             password = "password",
             isLoading = false,
-            error = ""
+            error = null
         ),
         onEmailChange = {},
         onPasswordChange = {},
