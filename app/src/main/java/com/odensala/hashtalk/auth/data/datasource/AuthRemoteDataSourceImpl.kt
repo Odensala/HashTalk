@@ -8,30 +8,42 @@ import com.odensala.hashtalk.auth.domain.model.AuthState
 import com.odensala.hashtalk.auth.domain.model.User
 import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
-import com.odensala.hashtalk.core.util.Resource
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+
+private const val TAG = "AuthRemoteDataSource"
 
 class AuthRemoteDataSourceImpl @Inject constructor(
     private val firebaseAuth: FirebaseAuth
 ) : AuthRemoteDataSource {
 
-    override suspend fun login(email: String, password: String): Resource<User> {
+    override suspend fun login(email: String, password: String): Result<Unit, DataError.AuthError> {
         return try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
             result.user?.let { firebaseUser ->
-                Resource.Success(firebaseUser.toUser())
-            } ?: Resource.Error("Login failed: No user data")
+                Result.Success(Unit)
+            } ?: Result.Error(DataError.AuthError.UNKNOWN)
         } catch (e: Exception) {
-            Resource.Error(e.message ?: "Unknown error occurred")
+            Log.e(TAG, "Login failed: ${e.message}", e)
+
+            if (e is FirebaseAuthException) {
+                when (e.errorCode) {
+                    "ERROR_INVALID_EMAIL" -> Result.Error(DataError.AuthError.INVALID_EMAIL)
+                    "ERROR_WRONG_PASSWORD" -> Result.Error(DataError.AuthError.WRONG_PASSWORD)
+                    "ERROR_USER_NOT_FOUND" -> Result.Error(DataError.AuthError.USER_NOT_FOUND)
+                    else -> Result.Error(DataError.AuthError.UNKNOWN)
+                }
+            } else {
+                Result.Error(DataError.AuthError.UNKNOWN)
+            }
         }
     }
 
-    override suspend fun signUp(email: String, password: String): Result<Unit, DataError.Auth> {
+    override suspend fun signUp(email: String, password: String): Result<Unit, DataError.AuthError> {
         return try {
             firebaseAuth.createUserWithEmailAndPassword(email, password).await()
 
@@ -39,28 +51,30 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         } catch (e: Exception) {
             if (e is FirebaseAuthException) {
                 when (e.errorCode) {
-                    "ERROR_EMAIL_ALREADY_IN_USE" -> Result.Error(DataError.Auth.EMAIL_ALREADY_IN_USE)
-                    "ERROR_WEAK_PASSWORD" -> Result.Error(DataError.Auth.WEAK_PASSWORD)
-                    "ERROR_INVALID_EMAIL" -> Result.Error(DataError.Auth.INVALID_EMAIL)
-                    else -> Result.Error(DataError.Auth.UNKNOWN)
+                    "ERROR_EMAIL_ALREADY_IN_USE" -> Result.Error(DataError.AuthError.EMAIL_ALREADY_IN_USE)
+                    "ERROR_WEAK_PASSWORD" -> Result.Error(DataError.AuthError.WEAK_PASSWORD)
+                    "ERROR_INVALID_EMAIL" -> Result.Error(DataError.AuthError.INVALID_EMAIL)
+                    else -> Result.Error(DataError.AuthError.UNKNOWN)
                 }
             } else {
-                Result.Error(DataError.Auth.UNKNOWN)
+                Result.Error(DataError.AuthError.UNKNOWN)
             }
         }
     }
 
-    override suspend fun logout(): Resource<Unit> {
+    override suspend fun logout(): Result<Unit, DataError.AuthError> {
         return try {
             firebaseAuth.signOut()
-            Resource.Success(Unit)
+            Result.Success(Unit)
         } catch (e: Exception) {
-            Resource.Error(e.message ?: "Logout failed")
+            Log.e(TAG, "Logout failed", e)
+            Result.Error(DataError.AuthError.UNKNOWN)
         }
     }
 
-    override fun getAuthStateFlow(): Flow<AuthState> = callbackFlow {
-        Log.d("Auth", "Initial user: ${firebaseAuth.currentUser?.email}")
+    override fun getAuthStateFlow(): Flow<Result<AuthState, DataError.AuthStateError>> = callbackFlow {
+        Log.d(TAG, "Initial user: ${firebaseAuth.currentUser?.email}")
+
         val listener =
             FirebaseAuth.AuthStateListener { auth ->
                 val authState =
@@ -68,7 +82,8 @@ class AuthRemoteDataSourceImpl @Inject constructor(
                         null -> AuthState.Unauthenticated
                         else -> AuthState.Authenticated
                     }
-                trySend(authState)
+
+                trySend(Result.Success(authState))
             }
 
         firebaseAuth.addAuthStateListener(listener)

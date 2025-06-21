@@ -34,4 +34,9 @@
     <string name="remove_image">Remove image</string>
     <string name="unauthorized_error">Unathorized error</string>
     <string name="unavailable_error">Service unavailable. Please try again later.</string>
+    <string name="invalid_credentials_error">Credentials are invalid</string>
+    <string name="field_empty_error">Please fill in all the fields</string>
+    <string name="user_not_found_error">No user found</string>
+    <string name="weak_password_error">Weak password\n</string>
+    <string name="email_already_in_use_error">Email is already in use</string>
 </resources>

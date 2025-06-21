@@ -3,12 +3,14 @@ package com.odensala.hashtalk.auth.presentation.screen.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.odensala.hashtalk.auth.domain.repository.AuthRepository
-import com.odensala.hashtalk.core.util.Resource
+import com.odensala.hashtalk.auth.presentation.error.AuthUiError
+import com.odensala.hashtalk.auth.presentation.error.mapLoginErrorToUi
+import com.odensala.hashtalk.core.domain.error.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -29,7 +31,7 @@ class LoginViewModel @Inject constructor(
     fun onLoginClick() {
         val currentState = _uiState.value
         if (currentState.email.isBlank() || currentState.password.isBlank()) {
-            _uiState.value = currentState.copy(error = "Please fill in all fields")
+            _uiState.value = currentState.copy(error = AuthUiError.FieldEmpty)
             return
         }
 
@@ -43,7 +45,7 @@ class LoginViewModel @Inject constructor(
                 )
 
             when (result) {
-                is Resource.Success -> {
+                is Result.Success -> {
                     _uiState.value =
                         currentState.copy(
                             isLoading = false,
@@ -51,11 +53,11 @@ class LoginViewModel @Inject constructor(
                         )
                 }
 
-                is Resource.Error -> {
+                is Result.Error -> {
                     _uiState.value =
                         currentState.copy(
                             isLoading = false,
-                            error = result.message ?: "Login failed"
+                            error = mapLoginErrorToUi(result.error)
                         )
                 }
             }

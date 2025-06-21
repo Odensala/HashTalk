@@ -99,21 +99,24 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private fun handleSignUpError(error: DataError.Auth) {
+    private fun handleSignUpError(error: DataError.AuthError) {
         when (error) {
-            DataError.Auth.EMAIL_ALREADY_IN_USE -> {
+            DataError.AuthError.EMAIL_ALREADY_IN_USE -> {
                 _uiState.update { it.copy(emailError = EmailFieldError.AlreadyInUse) }
             }
 
-            DataError.Auth.INVALID_EMAIL -> {
+            DataError.AuthError.INVALID_EMAIL -> {
                 _uiState.update { it.copy(emailError = EmailFieldError.Invalid) }
             }
 
-            DataError.Auth.WEAK_PASSWORD -> {
+            DataError.AuthError.WEAK_PASSWORD -> {
                 _uiState.update { it.copy(passwordError = PasswordFieldError.Weak) }
             }
 
-            DataError.Auth.UNKNOWN -> {
+            DataError.AuthError.UNKNOWN -> {
+                _uiState.update { it.copy(generalError = GeneralSignUpError.Unknown) }
+            }
+            else -> {
                 _uiState.update { it.copy(generalError = GeneralSignUpError.Unknown) }
             }
         }
