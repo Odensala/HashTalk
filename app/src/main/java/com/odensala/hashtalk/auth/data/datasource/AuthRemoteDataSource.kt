@@ -8,19 +8,9 @@ import com.odensala.hashtalk.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRemoteDataSource {
-    suspend fun login(
-        email: String,
-        password: String,
-    ): Resource<User>
-
-    suspend fun signUp(
-        email: String,
-        password: String,
-    ): Result<Unit, DataError.Auth>
-
+    suspend fun login(email: String, password: String): Resource<User>
+    suspend fun signUp(email: String, password: String): Result<Unit, DataError.Auth>
     suspend fun logout(): Resource<Unit>
-
     fun getAuthStateFlow(): Flow<AuthState>
-
     suspend fun getCurrentUser(): User?
 }

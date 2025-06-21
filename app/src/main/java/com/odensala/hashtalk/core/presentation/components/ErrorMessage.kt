@@ -7,16 +7,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ErrorMessage(
-    error: String?,
-    modifier: Modifier = Modifier,
-) {
+fun ErrorMessage(error: String?, modifier: Modifier = Modifier) {
     error?.let {
         Text(
             text = it,
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodySmall,
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth()
         )
     }
 }

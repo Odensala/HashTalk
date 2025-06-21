@@ -9,5 +9,5 @@ data class Post(
     val userEmail: String = "",
     val content: String = "",
     val imageUrl: String? = null,
-    val timestamp: Timestamp = Timestamp.now(),
+    val timestamp: Timestamp = Timestamp.now()
 )

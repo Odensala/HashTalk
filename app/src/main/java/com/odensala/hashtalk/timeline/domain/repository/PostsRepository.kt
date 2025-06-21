@@ -8,8 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface PostsRepository {
     val posts: Flow<Result<List<Post>, DataError.PostError>>
 
-    suspend fun addPost(
-        post: String,
-        imageUrl: String? = null,
-    ): Result<Unit, DataError.PostError>
+    suspend fun addPost(post: String, imageUrl: String? = null): Result<Unit, DataError.PostError>
 }

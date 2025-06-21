@@ -10,11 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.odensala.hashtalk.R
 
 @Composable
-fun LogoutDialog(
-    showDialog: Boolean,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit,
-) {
+fun LogoutDialog(showDialog: Boolean, onConfirm: () -> Unit, onDismiss: () -> Unit) {
     if (showDialog) {
         AlertDialog(
             onDismissRequest = onDismiss,
@@ -29,7 +25,7 @@ fun LogoutDialog(
                 TextButton(onClick = onDismiss) {
                     Text(stringResource(R.string.cancel))
                 }
-            },
+            }
         )
     }
 }
@@ -40,6 +36,6 @@ fun PreviewLogoutConfirmationDialog() {
     LogoutDialog(
         showDialog = true,
         onConfirm = {},
-        onDismiss = {},
+        onDismiss = {}
     )
 }

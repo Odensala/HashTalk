@@ -24,10 +24,7 @@ import com.odensala.hashtalk.core.presentation.components.ErrorMessage
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
 
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel = hiltViewModel(),
-    onNavigateToSignUp: () -> Unit,
-) {
+fun LoginScreen(viewModel: LoginViewModel = hiltViewModel(), onNavigateToSignUp: () -> Unit) {
     val state by viewModel.uiState.collectAsState()
 
     LoginContent(
@@ -35,7 +32,7 @@ fun LoginScreen(
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
         onLoginClick = viewModel::onLoginClick,
-        onNavigateToSignUp = onNavigateToSignUp,
+        onNavigateToSignUp = onNavigateToSignUp
     )
 }
 
@@ -45,14 +42,13 @@ fun LoginContent(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
-    onNavigateToSignUp: () -> Unit,
+    onNavigateToSignUp: () -> Unit
 ) {
     Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center
     ) {
         Text(stringResource(R.string.hash_talk), style = MaterialTheme.typography.headlineLarge)
 
@@ -63,7 +59,7 @@ fun LoginContent(
             value = uiState.email,
             onValueChange = onEmailChange,
             label = stringResource(R.string.email),
-            enabled = !uiState.isLoading,
+            enabled = !uiState.isLoading
         )
 
         Spacer(Modifier.height(8.dp))
@@ -74,7 +70,7 @@ fun LoginContent(
             onValueChange = onPasswordChange,
             label = stringResource(R.string.password),
             isPassword = true,
-            enabled = !uiState.isLoading,
+            enabled = !uiState.isLoading
         )
 
         ErrorMessage(error = uiState.error)
@@ -85,7 +81,7 @@ fun LoginContent(
             modifier = Modifier.fillMaxWidth(),
             onClick = onLoginClick,
             text = stringResource(R.string.login),
-            isLoading = uiState.isLoading,
+            isLoading = uiState.isLoading
         )
 
         TextButton(onClick = onNavigateToSignUp) {
@@ -99,15 +95,15 @@ fun LoginContent(
 fun LoginScreenPreview() {
     LoginContent(
         uiState =
-            LoginUiState(
-                email = "doraemon@gmail.com",
-                password = "password",
-                isLoading = false,
-                error = "",
-            ),
+        LoginUiState(
+            email = "doraemon@gmail.com",
+            password = "password",
+            isLoading = false,
+            error = ""
+        ),
         onEmailChange = {},
         onPasswordChange = {},
         onLoginClick = {},
-        onNavigateToSignUp = {},
+        onNavigateToSignUp = {}
     )
 }

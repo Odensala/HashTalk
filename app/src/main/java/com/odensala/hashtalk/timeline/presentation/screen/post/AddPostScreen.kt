@@ -40,10 +40,7 @@ private const val TAG = "AddPostScreen"
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddPostScreen(
-    viewModel: AddPostViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit,
-) {
+fun AddPostScreen(viewModel: AddPostViewModel = hiltViewModel(), onNavigateBack: () -> Unit) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState.isSuccess) {
@@ -59,7 +56,7 @@ fun AddPostScreen(
         onPostContentChange = viewModel::onPostContentChange,
         onPostSubmit = viewModel::addPost,
         onImageSelected = viewModel::onImageSelected,
-        onClearError = viewModel::clearError,
+        onClearError = viewModel::clearError
     )
 }
 
@@ -72,12 +69,12 @@ fun AddPostContent(
     onPostSubmit: (String) -> Unit,
     onImageSelected: (Uri?) -> Unit,
     onClearError: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
     val imagePickerLauncher =
         rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.PickVisualMedia(),
+            contract = ActivityResultContracts.PickVisualMedia()
         ) { uri: Uri? ->
             onImageSelected(uri)
         }
@@ -92,10 +89,9 @@ fun AddPostContent(
     }
 
     Column(
-        modifier =
-            Modifier
-                .fillMaxSize()
-                .imePadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding()
     ) {
         TopAppBar(
             title = { Text(stringResource(R.string.add_post)) },
@@ -103,7 +99,7 @@ fun AddPostContent(
                 IconButton(onClick = onNavigateBack) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back_button_description),
+                        contentDescription = stringResource(R.string.back_button_description)
                     )
                 }
             },
@@ -112,15 +108,15 @@ fun AddPostContent(
                     onClick = {
                         imagePickerLauncher.launch(
                             PickVisualMediaRequest(
-                                ActivityResultContracts.PickVisualMedia.ImageOnly,
-                            ),
+                                ActivityResultContracts.PickVisualMedia.ImageOnly
+                            )
                         )
                     },
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
-                        contentDescription = stringResource(R.string.add_image),
+                        contentDescription = stringResource(R.string.add_image)
                     )
                 }
 
@@ -131,9 +127,9 @@ fun AddPostContent(
                         onPostSubmit(uiState.postContent)
                     },
                     modifier = Modifier.padding(end = 16.dp),
-                    text = stringResource(R.string.post_button_text),
+                    text = stringResource(R.string.post_button_text)
                 )
-            },
+            }
         )
 
         AddPostTextField(
@@ -141,24 +137,21 @@ fun AddPostContent(
             onValueChange = { onPostContentChange(it.take(POST_MAX_CHAR)) },
             focusRequester = focusRequester,
             enabled = !uiState.isLoading,
-            modifier =
-                Modifier
-                    .weight(1f),
+            modifier = Modifier.weight(1f)
         )
 
         uiState.selectedImageUri?.let { uri ->
             SelectedImage(
                 imageUri = uri,
-                onRemove = { onImageSelected(null) },
+                onRemove = { onImageSelected(null) }
             )
         }
 
         Text(
             text = "${uiState.postContent.length} / $POST_MAX_CHAR",
-            modifier =
-                Modifier
-                    .align(Alignment.End)
-                    .padding(16.dp),
+            modifier = Modifier
+                .align(Alignment.End)
+                .padding(16.dp)
         )
 
         uiState.postError?.let { error ->
@@ -168,8 +161,10 @@ fun AddPostContent(
                 when (error) {
                     is PostUiError.Unavailable -> {
                     }
+
                     is PostUiError.Unauthorized -> {
                     }
+
                     is PostUiError.Unknown -> {
                     }
                 }
@@ -185,17 +180,17 @@ fun AddPostContent(
 fun PreviewAddPostContent() {
     AddPostContent(
         uiState =
-            AddPostUiState(
-                selectedImageUri = Uri.EMPTY,
-                isLoading = false,
-                postContent = "",
-                postError = null,
-                isSuccess = false,
-            ),
+        AddPostUiState(
+            selectedImageUri = Uri.EMPTY,
+            isLoading = false,
+            postContent = "",
+            postError = null,
+            isSuccess = false
+        ),
         onNavigateBack = {},
         onPostSubmit = { },
         onPostContentChange = { },
         onImageSelected = { },
-        onClearError = { },
+        onClearError = { }
     )
 }

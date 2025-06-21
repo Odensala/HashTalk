@@ -16,47 +16,48 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TimelineViewModel
-    @Inject
-    constructor(private val postsRepository: PostsRepository, private val authRepository: AuthRepository) : ViewModel() {
-        val uiState: StateFlow<TimelineUiState> =
-            postsRepository.posts
-                .map { result ->
-                    when (result) {
-                        is Result.Success ->
-                            TimelineUiState(
-                                posts =
-                                    result.data.map { post ->
-                                        post.toUiModel()
-                                    },
-                                isLoading = false,
-                                error = null,
-                            )
-                        is Result.Error ->
-                            TimelineUiState(
-                                isLoading = false,
-                                error = mapPostErrorToUi(result.error),
-                            )
-                    }
+class TimelineViewModel @Inject constructor(
+    private val postsRepository: PostsRepository,
+    private val authRepository: AuthRepository
+) : ViewModel() {
+
+    val uiState: StateFlow<TimelineUiState> =
+        postsRepository.posts
+            .map { result ->
+                when (result) {
+                    is Result.Success ->
+                        TimelineUiState(
+                            posts = result.data.map { post ->
+                                post.toUiModel()
+                            },
+                            isLoading = false,
+                            error = null
+                        )
+
+                    is Result.Error ->
+                        TimelineUiState(
+                            isLoading = false,
+                            error = mapPostErrorToUi(result.error)
+                        )
                 }
-                .stateIn(
-                    scope = viewModelScope,
-                    started = SharingStarted.WhileSubscribed(5000),
-                    initialValue = TimelineUiState(isLoading = true),
-                )
-
-        fun logout() {
-            viewModelScope.launch {
-                authRepository.logout()
             }
-        }
-
-        private fun Post.toUiModel() =
-            PostUiModel(
-                id = id,
-                userEmail = userEmail,
-                content = content,
-                imageUrl = imageUrl,
-                timestamp = timestamp,
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = TimelineUiState(isLoading = true)
             )
+
+    fun logout() {
+        viewModelScope.launch {
+            authRepository.logout()
+        }
     }
+
+    private fun Post.toUiModel() = PostUiModel(
+        id = id,
+        userEmail = userEmail,
+        content = content,
+        imageUrl = imageUrl,
+        timestamp = timestamp
+    )
+}

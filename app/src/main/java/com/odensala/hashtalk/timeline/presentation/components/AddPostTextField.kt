@@ -28,8 +28,8 @@ fun AddPostTextField(
         OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color.Transparent,
             unfocusedBorderColor = Color.Transparent,
-            disabledBorderColor = Color.Transparent,
-        ),
+            disabledBorderColor = Color.Transparent
+        )
 ) {
     OutlinedTextField(
         value = value,
@@ -39,6 +39,6 @@ fun AddPostTextField(
         enabled = enabled,
         maxLines = maxLines,
         textStyle = textStyle,
-        colors = colors,
+        colors = colors
     )
 }

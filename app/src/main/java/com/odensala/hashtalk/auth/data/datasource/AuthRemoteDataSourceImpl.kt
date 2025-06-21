@@ -9,18 +9,17 @@ import com.odensala.hashtalk.auth.domain.model.User
 import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.core.util.Resource
+import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
-class AuthRemoteDataSourceImpl(
-    private val firebaseAuth: FirebaseAuth,
+class AuthRemoteDataSourceImpl @Inject constructor(
+    private val firebaseAuth: FirebaseAuth
 ) : AuthRemoteDataSource {
-    override suspend fun login(
-        email: String,
-        password: String,
-    ): Resource<User> {
+
+    override suspend fun login(email: String, password: String): Resource<User> {
         return try {
             val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
@@ -32,10 +31,7 @@ class AuthRemoteDataSourceImpl(
         }
     }
 
-    override suspend fun signUp(
-        email: String,
-        password: String,
-    ): Result<Unit, DataError.Auth> {
+    override suspend fun signUp(email: String, password: String): Result<Unit, DataError.Auth> {
         return try {
             firebaseAuth.createUserWithEmailAndPassword(email, password).await()
 
@@ -63,22 +59,21 @@ class AuthRemoteDataSourceImpl(
         }
     }
 
-    override fun getAuthStateFlow(): Flow<AuthState> =
-        callbackFlow {
-            Log.d("Auth", "Initial user: ${firebaseAuth.currentUser?.email}")
-            val listener =
-                FirebaseAuth.AuthStateListener { auth ->
-                    val authState =
-                        when (auth.currentUser) {
-                            null -> AuthState.Unauthenticated
-                            else -> AuthState.Authenticated
-                        }
-                    trySend(authState)
-                }
+    override fun getAuthStateFlow(): Flow<AuthState> = callbackFlow {
+        Log.d("Auth", "Initial user: ${firebaseAuth.currentUser?.email}")
+        val listener =
+            FirebaseAuth.AuthStateListener { auth ->
+                val authState =
+                    when (auth.currentUser) {
+                        null -> AuthState.Unauthenticated
+                        else -> AuthState.Authenticated
+                    }
+                trySend(authState)
+            }
 
-            firebaseAuth.addAuthStateListener(listener)
-            awaitClose { firebaseAuth.removeAuthStateListener(listener) }
-        }
+        firebaseAuth.addAuthStateListener(listener)
+        awaitClose { firebaseAuth.removeAuthStateListener(listener) }
+    }
 
     override suspend fun getCurrentUser(): User? {
         return firebaseAuth.currentUser?.toUser()

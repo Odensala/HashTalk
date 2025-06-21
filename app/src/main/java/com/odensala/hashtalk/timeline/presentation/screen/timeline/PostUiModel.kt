@@ -7,5 +7,5 @@ data class PostUiModel(
     val userEmail: String = "",
     val content: String = "",
     val imageUrl: String? = null,
-    val timestamp: Timestamp,
+    val timestamp: Timestamp
 )

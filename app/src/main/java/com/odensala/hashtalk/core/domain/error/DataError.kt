@@ -5,16 +5,16 @@ sealed interface DataError : Failure {
         EMAIL_ALREADY_IN_USE,
         WEAK_PASSWORD,
         INVALID_EMAIL,
-        UNKNOWN,
+        UNKNOWN
     }
 
     enum class PostError : DataError {
         UNAVAILABLE,
         PERMISSION_DENIED,
-        UNKNOWN,
+        UNKNOWN
     }
 
     enum class ImageError : DataError {
-        UPLOAD_FAILED,
+        UPLOAD_FAILED
     }
 }

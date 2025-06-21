@@ -6,5 +6,5 @@ data class TimelineUiState(
     val posts: List<PostUiModel> = emptyList(),
     val isLoading: Boolean = true,
     val isLoggingOut: Boolean = false,
-    val error: PostUiError? = null,
+    val error: PostUiError? = null
 )

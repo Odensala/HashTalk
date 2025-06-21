@@ -33,10 +33,7 @@ import com.odensala.hashtalk.core.presentation.components.ErrorMessage
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
 
 @Composable
-fun SignUpScreen(
-    viewModel: SignUpViewModel = hiltViewModel(),
-    onNavigateBack: () -> Unit,
-) {
+fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(), onNavigateBack: () -> Unit) {
     val state by viewModel.uiState.collectAsState()
 
     SignUpContent(
@@ -45,7 +42,7 @@ fun SignUpScreen(
         onPasswordChange = viewModel::onPasswordChange,
         onRepeatPasswordChange = viewModel::onRepeatPasswordChange,
         onSignUpClick = viewModel::onSignUpClick,
-        onNavigateBack = onNavigateBack,
+        onNavigateBack = onNavigateBack
     )
 }
 
@@ -57,7 +54,7 @@ fun SignUpContent(
     onPasswordChange: (String) -> Unit,
     onRepeatPasswordChange: (String) -> Unit,
     onSignUpClick: () -> Unit,
-    onNavigateBack: () -> Unit,
+    onNavigateBack: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -68,23 +65,22 @@ fun SignUpContent(
                         Icon(
                             Icons.AutoMirrored.Default.ArrowBack,
                             contentDescription =
-                                stringResource(
-                                    R.string.back,
-                                ),
+                            stringResource(
+                                R.string.back
+                            )
                         )
                     }
-                },
+                }
             )
-        },
+        }
     ) { paddingValues ->
 
         Column(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             Text(stringResource(R.string.sign_up), style = MaterialTheme.typography.headlineLarge)
 
@@ -95,7 +91,7 @@ fun SignUpContent(
                 value = uiState.email,
                 onValueChange = onEmailChange,
                 label = stringResource(R.string.email),
-                enabled = !uiState.isLoading,
+                enabled = !uiState.isLoading
             )
 
             uiState.emailError?.let { error ->
@@ -110,7 +106,7 @@ fun SignUpContent(
                 onValueChange = onPasswordChange,
                 label = stringResource(R.string.password),
                 isPassword = true,
-                enabled = !uiState.isLoading,
+                enabled = !uiState.isLoading
             )
 
             uiState.passwordError?.let { error ->
@@ -123,7 +119,7 @@ fun SignUpContent(
                 onValueChange = onRepeatPasswordChange,
                 label = stringResource(R.string.repeat_password),
                 isPassword = true,
-                enabled = !uiState.isLoading,
+                enabled = !uiState.isLoading
             )
 
             uiState.repeatPasswordError?.let { error ->
@@ -141,50 +137,47 @@ fun SignUpContent(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = onSignUpClick,
                 text = stringResource(R.string.sign_up),
-                isLoading = uiState.isLoading,
+                isLoading = uiState.isLoading
             )
         }
     }
 }
 
-fun mapGeneralSignUpErrorToUi(error: GeneralSignUpError): Int =
-    when (error) {
-        GeneralSignUpError.Unknown -> R.string.unknown_error
-        GeneralSignUpError.Network -> R.string.network_error
-    }
+fun mapGeneralSignUpErrorToUi(error: GeneralSignUpError): Int = when (error) {
+    GeneralSignUpError.Unknown -> R.string.unknown_error
+    GeneralSignUpError.Network -> R.string.network_error
+}
 
-fun emailFieldErrorMessageRes(error: EmailFieldError): Int =
-    when (error) {
-        EmailFieldError.Empty -> R.string.email_empty
-        EmailFieldError.Invalid -> R.string.email_invalid_format
-        EmailFieldError.AlreadyInUse -> R.string.email_already_in_use
-        EmailFieldError.Unknown -> R.string.unknown_error
-    }
+fun emailFieldErrorMessageRes(error: EmailFieldError): Int = when (error) {
+    EmailFieldError.Empty -> R.string.email_empty
+    EmailFieldError.Invalid -> R.string.email_invalid_format
+    EmailFieldError.AlreadyInUse -> R.string.email_already_in_use
+    EmailFieldError.Unknown -> R.string.unknown_error
+}
 
-fun passwordFieldErrorMessageRes(error: PasswordFieldError): Int =
-    when (error) {
-        PasswordFieldError.Empty -> R.string.password_empty
-        PasswordFieldError.TooShort -> R.string.password_too_short
-        PasswordFieldError.NotMatching -> R.string.passwords_do_not_match
-        PasswordFieldError.Weak -> R.string.password_requires_one_letter_one_digit
-        PasswordFieldError.Invalid -> R.string.password_invalid
-        PasswordFieldError.Unknown -> R.string.unknown_error
-    }
+fun passwordFieldErrorMessageRes(error: PasswordFieldError): Int = when (error) {
+    PasswordFieldError.Empty -> R.string.password_empty
+    PasswordFieldError.TooShort -> R.string.password_too_short
+    PasswordFieldError.NotMatching -> R.string.passwords_do_not_match
+    PasswordFieldError.Weak -> R.string.password_requires_one_letter_one_digit
+    PasswordFieldError.Invalid -> R.string.password_invalid
+    PasswordFieldError.Unknown -> R.string.unknown_error
+}
 
 @Preview(showBackground = true)
 @Composable
 fun SignUpScreenPreview() {
     SignUpContent(
         uiState =
-            SignUpUiState(
-                email = "doraemon@gmail.com",
-                password = "password",
-                isLoading = false,
-            ),
+        SignUpUiState(
+            email = "doraemon@gmail.com",
+            password = "password",
+            isLoading = false
+        ),
         onEmailChange = {},
         onPasswordChange = {},
         onSignUpClick = {},
         onRepeatPasswordChange = {},
-        onNavigateBack = {},
+        onNavigateBack = {}
     )
 }

@@ -12,5 +12,5 @@ data class SignUpUiState(
     val passwordError: PasswordFieldError? = null,
     val repeatPasswordError: PasswordFieldError? = null,
     val isLoading: Boolean = false,
-    val generalError: GeneralSignUpError? = null,
+    val generalError: GeneralSignUpError? = null
 )

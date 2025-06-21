@@ -17,16 +17,17 @@ fun HashTalkApp(authViewModel: AppViewModel = hiltViewModel()) {
     val navController = rememberNavController()
     val authState by authViewModel.authState.collectAsState()
 
+    // TODO: Can display a splash screen here instead for better UX
     val startDestination: Any =
         when (authState) {
             AuthState.Authenticated -> TimelineGraph
             AuthState.Unauthenticated -> AuthGraph
-            AuthState.CheckingAuthentication -> AuthGraph // TODO: Can display a splash screen here instead for better UX
+            AuthState.CheckingAuthentication -> AuthGraph
         }
 
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = startDestination
     ) {
         authNavGraph(navController)
         timelineNavGraph(navController)
