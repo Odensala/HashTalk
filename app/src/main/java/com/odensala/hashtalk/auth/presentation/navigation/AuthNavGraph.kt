@@ -14,7 +14,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavController) {
             LoginScreen(
                 onNavigateToSignUp = {
                     navController.navigate(AuthGraph.SignUpScreen)
-                },
+                }
             )
         }
 

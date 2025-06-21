@@ -21,27 +21,22 @@ import coil.compose.AsyncImage
 import com.odensala.hashtalk.R
 
 @Composable
-fun SelectedImage(
-    imageUri: Uri,
-    onRemove: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+fun SelectedImage(imageUri: Uri, onRemove: () -> Unit, modifier: Modifier = Modifier) {
     Box(modifier = modifier) {
         AsyncImage(
             model = imageUri,
             contentDescription = stringResource(R.string.selected_image),
             contentScale = ContentScale.Crop,
-            modifier =
-                Modifier
-                    .size(200.dp)
-                    .padding(16.dp)
-                    .clip(RoundedCornerShape(16.dp)),
+            modifier = Modifier
+                .size(200.dp)
+                .padding(16.dp)
+                .clip(RoundedCornerShape(16.dp))
         )
         IconButton(
             onClick = onRemove,
-            modifier =
-                Modifier.align(Alignment.TopEnd)
-                    .padding(16.dp),
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
         ) {
             Icon(Icons.Default.Close, contentDescription = stringResource(R.string.remove_image))
         }
@@ -53,6 +48,6 @@ fun SelectedImage(
 fun PreviewSelectedImage() {
     SelectedImage(
         imageUri = Uri.EMPTY,
-        onRemove = {},
+        onRemove = {}
     )
 }

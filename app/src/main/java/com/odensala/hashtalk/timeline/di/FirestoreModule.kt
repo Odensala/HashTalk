@@ -28,6 +28,6 @@ object FirestoreModule {
     @Singleton
     fun provideFirestoreRepository(
         postsRemoteDataSource: PostsRemoteDataSource,
-        authRemoteDataSource: AuthRemoteDataSource,
+        authRemoteDataSource: AuthRemoteDataSource
     ): PostsRepository = PostsRepositoryImpl(postsRemoteDataSource, authRemoteDataSource)
 }

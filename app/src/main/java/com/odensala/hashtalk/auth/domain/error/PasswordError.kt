@@ -7,5 +7,5 @@ enum class PasswordError : Failure {
     WEAK,
     INVALID,
     NOT_MATCHING,
-    TOO_SHORT,
+    TOO_SHORT
 }

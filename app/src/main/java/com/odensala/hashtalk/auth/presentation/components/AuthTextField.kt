@@ -15,7 +15,7 @@ fun AuthTextField(
     label: String,
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
-    enabled: Boolean = true,
+    enabled: Boolean = true
 ) {
     OutlinedTextField(
         value = value,
@@ -24,6 +24,6 @@ fun AuthTextField(
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
         enabled = enabled,
-        visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+        visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
     )
 }

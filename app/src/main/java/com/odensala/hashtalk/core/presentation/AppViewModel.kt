@@ -10,13 +10,12 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class AppViewModel
-    @Inject
-    constructor(private val authRepository: AuthRepository) : ViewModel() {
-        val authState =
-            authRepository.authState.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.Companion.WhileSubscribed(5000),
-                initialValue = AuthState.CheckingAuthentication,
-            )
-    }
+class AppViewModel @Inject constructor(private val authRepository: AuthRepository) : ViewModel() {
+
+    val authState =
+        authRepository.authState.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Companion.WhileSubscribed(5000),
+            initialValue = AuthState.CheckingAuthentication
+        )
+}

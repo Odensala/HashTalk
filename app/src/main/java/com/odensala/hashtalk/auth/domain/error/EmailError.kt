@@ -6,5 +6,5 @@ enum class EmailError : Failure {
     EMPTY,
     INVALID,
     ALREADY_IN_USE,
-    UNKNOWN,
+    UNKNOWN
 }

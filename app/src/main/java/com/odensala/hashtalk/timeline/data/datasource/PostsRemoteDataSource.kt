@@ -7,6 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostsRemoteDataSource {
     suspend fun addPost(post: Post): Result<Unit, DataError.PostError>
-
     fun getPostsFlow(): Flow<Result<List<Post>, DataError.PostError>>
 }

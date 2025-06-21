@@ -7,6 +7,6 @@ fun FirebaseUser.toUser(): User {
     return User(
         uid = uid,
         email = email ?: "",
-        displayName = displayName,
+        displayName = displayName
     )
 }

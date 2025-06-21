@@ -37,17 +37,14 @@ import com.odensala.hashtalk.timeline.presentation.components.LogoutDialog
 import com.odensala.hashtalk.timeline.presentation.error.PostUiError
 
 @Composable
-fun TimelineScreen(
-    viewModel: TimelineViewModel = hiltViewModel(),
-    onNavigateToAddPost: () -> Unit = {},
-) {
+fun TimelineScreen(viewModel: TimelineViewModel = hiltViewModel(), onNavigateToAddPost: () -> Unit = {}) {
     val uiState by viewModel.uiState.collectAsState()
     var showLogoutDialog by remember { mutableStateOf(false) }
 
     TimelineContent(
         uiState = uiState,
         onLogout = { showLogoutDialog = true },
-        onNavigateToAddPost = onNavigateToAddPost,
+        onNavigateToAddPost = onNavigateToAddPost
     )
 
     LogoutDialog(
@@ -56,7 +53,7 @@ fun TimelineScreen(
             showLogoutDialog = false
             viewModel.logout()
         },
-        onDismiss = { showLogoutDialog = false },
+        onDismiss = { showLogoutDialog = false }
     )
 }
 
@@ -66,7 +63,7 @@ fun TimelineContent(
     uiState: TimelineUiState,
     modifier: Modifier = Modifier,
     onLogout: () -> Unit = {},
-    onNavigateToAddPost: () -> Unit = {},
+    onNavigateToAddPost: () -> Unit = {}
 ) {
     val listState = rememberLazyListState()
 
@@ -87,27 +84,23 @@ fun TimelineContent(
                         text = stringResource(R.string.logout),
                         isLoading = uiState.isLoggingOut,
                         enabled = !uiState.isLoggingOut,
-                        modifier =
-                            Modifier.padding(
-                                end = 8.dp,
-                            ),
+                        modifier = Modifier.padding(end = 8.dp)
                     )
-                },
+                }
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onNavigateToAddPost() },
+                onClick = { onNavigateToAddPost() }
             ) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_post))
             }
-        },
+        }
     ) { paddingValues ->
         Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
         ) {
             when {
                 uiState.isLoading -> {
@@ -126,11 +119,15 @@ fun TimelineContent(
                     CenteredContent {
                         Text(
                             text =
-                                when (uiState.error) {
-                                    PostUiError.Unauthorized -> stringResource(R.string.unauthorized_error)
-                                    PostUiError.Unavailable -> stringResource(R.string.unavailable_error)
-                                    PostUiError.Unknown -> stringResource(R.string.unknown_error)
-                                },
+                            when (uiState.error) {
+                                PostUiError.Unauthorized -> stringResource(
+                                    R.string.unauthorized_error
+                                )
+                                PostUiError.Unavailable -> stringResource(
+                                    R.string.unavailable_error
+                                )
+                                PostUiError.Unknown -> stringResource(R.string.unknown_error)
+                            }
                         )
                     }
                 }
@@ -140,7 +137,7 @@ fun TimelineContent(
                         state = listState,
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(uiState.posts, key = { it.id }) { post ->
                             PostItem(post = post)
@@ -157,18 +154,18 @@ fun TimelineContent(
 fun PreviewTimelineScreen() {
     TimelineContent(
         uiState =
-            TimelineUiState(
-                isLoading = false,
-                posts =
-                    listOf(
-                        PostUiModel(
-                            id = "1",
-                            userEmail = "test@example.com",
-                            content = "Hello, world!",
-                            timestamp = Timestamp.now(),
-                        ),
-                    ),
-            ),
-        onNavigateToAddPost = {},
+        TimelineUiState(
+            isLoading = false,
+            posts =
+            listOf(
+                PostUiModel(
+                    id = "1",
+                    userEmail = "test@example.com",
+                    content = "Hello, world!",
+                    timestamp = Timestamp.now()
+                )
+            )
+        ),
+        onNavigateToAddPost = {}
     )
 }

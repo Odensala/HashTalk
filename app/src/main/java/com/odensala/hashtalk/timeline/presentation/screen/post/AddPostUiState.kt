@@ -10,5 +10,5 @@ data class AddPostUiState(
     val isLoading: Boolean = false,
     val isSuccess: Boolean = false,
     val postError: PostUiError? = null,
-    val imageError: ImageUiError? = null,
+    val imageError: ImageUiError? = null
 )

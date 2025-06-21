@@ -29,19 +29,19 @@ import com.odensala.hashtalk.timeline.presentation.util.formatToDateString
 fun PostItem(post: PostUiModel) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(16.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = post.userEmail,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -49,7 +49,7 @@ fun PostItem(post: PostUiModel) {
                 Text(
                     text = post.timestamp.formatToDateString(),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -57,7 +57,7 @@ fun PostItem(post: PostUiModel) {
 
             Text(
                 text = post.content,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyLarge
             )
 
             // Image
@@ -68,12 +68,11 @@ fun PostItem(post: PostUiModel) {
                 AsyncImage(
                     model = imageUrl,
                     contentDescription = stringResource(R.string.post_image),
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
                 )
             }
         }
@@ -85,12 +84,12 @@ fun PostItem(post: PostUiModel) {
 fun PostItemPreview() {
     PostItem(
         post =
-            PostUiModel(
-                id = "1",
-                userEmail = "doraemon@gmail.com",
-                content = "This is a sample post content.",
-                imageUrl = "https://example.com/image.jpg",
-                timestamp = Timestamp.now(),
-            ),
+        PostUiModel(
+            id = "1",
+            userEmail = "doraemon@gmail.com",
+            content = "This is a sample post content.",
+            imageUrl = "https://example.com/image.jpg",
+            timestamp = Timestamp.now()
+        )
     )
 }
