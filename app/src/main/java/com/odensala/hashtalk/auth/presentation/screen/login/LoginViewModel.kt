@@ -7,10 +7,10 @@ import com.odensala.hashtalk.auth.presentation.screen.login.error.AuthUiError
 import com.odensala.hashtalk.auth.presentation.screen.login.error.mapLoginErrorToUi
 import com.odensala.hashtalk.core.domain.error.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
