@@ -33,6 +33,7 @@ import com.google.firebase.Timestamp
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.core.presentation.components.CenteredContent
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
+import com.odensala.hashtalk.core.presentation.theme.paddingMedium
 import com.odensala.hashtalk.timeline.presentation.components.LogoutDialog
 import com.odensala.hashtalk.timeline.presentation.error.PostUiError
 
@@ -136,7 +137,7 @@ fun TimelineContent(
                     LazyColumn(
                         state = listState,
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
+                        contentPadding = PaddingValues(paddingMedium),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(uiState.posts, key = { it.id }) { post ->

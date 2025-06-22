@@ -27,10 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
+import com.odensala.hashtalk.core.presentation.theme.paddingMedium
+import com.odensala.hashtalk.core.presentation.theme.paddingSmall
 import com.odensala.hashtalk.timeline.domain.POST_MAX_CHAR
 import com.odensala.hashtalk.timeline.presentation.components.AddPostTextField
 import com.odensala.hashtalk.timeline.presentation.components.SelectedImage
@@ -56,7 +57,8 @@ fun AddPostScreen(viewModel: AddPostViewModel = hiltViewModel(), onNavigateBack:
         onPostContentChange = viewModel::onPostContentChange,
         onPostSubmit = viewModel::addPost,
         onImageSelected = viewModel::onImageSelected,
-        onClearError = viewModel::clearError
+        onClearError = viewModel::clearError,
+        onGenerateHash = viewModel::onGenerateHash
     )
 }
 
@@ -69,6 +71,7 @@ fun AddPostContent(
     onPostSubmit: (String) -> Unit,
     onImageSelected: (Uri?) -> Unit,
     onClearError: () -> Unit,
+    onGenerateHash: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -112,7 +115,7 @@ fun AddPostContent(
                             )
                         )
                     },
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(paddingSmall)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
@@ -121,12 +124,21 @@ fun AddPostContent(
                 }
 
                 LoadingButton(
+                    enabled = isPostEnabled,
+                    onClick = {
+                        onGenerateHash()
+                    },
+                    modifier = Modifier.padding(end = paddingSmall),
+                    text = stringResource(R.string.hash_button_text)
+                )
+
+                LoadingButton(
                     isLoading = uiState.isLoading,
                     enabled = isPostEnabled,
                     onClick = {
                         onPostSubmit(uiState.postContent)
                     },
-                    modifier = Modifier.padding(end = 16.dp),
+                    modifier = Modifier.padding(end = paddingMedium),
                     text = stringResource(R.string.post_button_text)
                 )
             }
@@ -151,7 +163,7 @@ fun AddPostContent(
             text = "${uiState.postContent.length} / $POST_MAX_CHAR",
             modifier = Modifier
                 .align(Alignment.End)
-                .padding(16.dp)
+                .padding(paddingMedium)
         )
 
         uiState.postError?.let { error ->
@@ -191,6 +203,7 @@ fun PreviewAddPostContent() {
         onPostSubmit = { },
         onPostContentChange = { },
         onImageSelected = { },
-        onClearError = { }
+        onClearError = { },
+        onGenerateHash = { }
     )
 }

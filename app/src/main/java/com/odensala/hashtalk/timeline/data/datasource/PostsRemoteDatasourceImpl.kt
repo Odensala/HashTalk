@@ -30,6 +30,7 @@ class PostsRemoteDatasourceImpl @Inject constructor(
                 FirebaseFirestoreException.Code.UNAVAILABLE -> DataError.PostError.UNAVAILABLE
                 else -> DataError.PostError.UNKNOWN
             }
+
             Result.Error(error)
         } catch (e: Exception) {
             Log.e(TAG, "Error adding post", e)
@@ -48,6 +49,7 @@ class PostsRemoteDatasourceImpl @Inject constructor(
 
                         else -> DataError.PostError.UNKNOWN
                     }
+
                     trySend(Result.Error(postError))
 
                     return@addSnapshotListener

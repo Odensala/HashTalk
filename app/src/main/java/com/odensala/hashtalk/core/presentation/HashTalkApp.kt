@@ -12,6 +12,9 @@ import com.odensala.hashtalk.auth.presentation.navigation.authNavGraph
 import com.odensala.hashtalk.timeline.presentation.navigation.TimelineGraph
 import com.odensala.hashtalk.timeline.presentation.navigation.timelineNavGraph
 
+/**
+ * The main entry point for the HashTalk application.
+ */
 @Composable
 fun HashTalkApp(authViewModel: AppViewModel = hiltViewModel()) {
     val navController = rememberNavController()
