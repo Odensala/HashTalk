@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
 import com.odensala.hashtalk.core.presentation.theme.paddingMedium
+import com.odensala.hashtalk.core.presentation.theme.paddingSmall
 import com.odensala.hashtalk.timeline.domain.POST_MAX_CHAR
 import com.odensala.hashtalk.timeline.presentation.components.AddPostTextField
 import com.odensala.hashtalk.timeline.presentation.components.SelectedImage
@@ -56,7 +57,8 @@ fun AddPostScreen(viewModel: AddPostViewModel = hiltViewModel(), onNavigateBack:
         onPostContentChange = viewModel::onPostContentChange,
         onPostSubmit = viewModel::addPost,
         onImageSelected = viewModel::onImageSelected,
-        onClearError = viewModel::clearError
+        onClearError = viewModel::clearError,
+        onGenerateHash = viewModel::onGenerateHash
     )
 }
 
@@ -69,6 +71,7 @@ fun AddPostContent(
     onPostSubmit: (String) -> Unit,
     onImageSelected: (Uri?) -> Unit,
     onClearError: () -> Unit,
+    onGenerateHash: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -112,13 +115,22 @@ fun AddPostContent(
                             )
                         )
                     },
-                    modifier = Modifier.padding(paddingMedium)
+                    modifier = Modifier.padding(paddingSmall)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
                         contentDescription = stringResource(R.string.add_image)
                     )
                 }
+
+                LoadingButton(
+                    enabled = isPostEnabled,
+                    onClick = {
+                        onGenerateHash()
+                    },
+                    modifier = Modifier.padding(end = paddingSmall),
+                    text = stringResource(R.string.hash_button_text)
+                )
 
                 LoadingButton(
                     isLoading = uiState.isLoading,
@@ -191,6 +203,7 @@ fun PreviewAddPostContent() {
         onPostSubmit = { },
         onPostContentChange = { },
         onImageSelected = { },
-        onClearError = { }
+        onClearError = { },
+        onGenerateHash = { }
     )
 }

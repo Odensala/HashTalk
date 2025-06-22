@@ -23,7 +23,7 @@
     <string name="back_button_description">Back</string>
     <string name="logout">Logout</string>
     <string name="timeline">Timeline</string>
-    <string name="add_post">Add Post</string>
+    <string name="add_post">Post</string>
     <string name="empty_posts">Hmm… it\'s kind of empty in here.</string>
     <string name="post_image">Post image</string>
     <string name="confirm_logout">Confirm Logout</string>
@@ -39,4 +39,6 @@
     <string name="user_not_found_error">No user found</string>
     <string name="weak_password_error">Weak password\n</string>
     <string name="email_already_in_use_error">Email is already in use</string>
+    <string name="generate_hash">Generate Hash</string>
+    <string name="hash_button_text">Hash it!</string>
 </resources>

@@ -8,6 +8,7 @@ import com.odensala.hashtalk.timeline.domain.repository.ImagesRepository
 import com.odensala.hashtalk.timeline.domain.repository.PostsRepository
 import com.odensala.hashtalk.timeline.presentation.error.mapImageErrorToUiMessage
 import com.odensala.hashtalk.timeline.presentation.error.mapPostErrorToUi
+import com.odensala.hashtalk.timeline.presentation.util.toSHA256
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,5 +97,9 @@ class AddPostViewModel @Inject constructor(
         _uiState.update { state ->
             state.copy(selectedImageUri = uri)
         }
+    }
+
+    fun onGenerateHash() {
+        onPostContentChange(uiState.value.postContent.toSHA256())
     }
 }
