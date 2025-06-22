@@ -7,11 +7,11 @@ import com.google.firebase.firestore.Query
 import com.odensala.hashtalk.core.domain.error.DataError
 import com.odensala.hashtalk.core.domain.error.Result
 import com.odensala.hashtalk.timeline.data.model.Post
-import javax.inject.Inject
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 private const val TAG = "PostsRemoteDatasource"
 
@@ -30,6 +30,7 @@ class PostsRemoteDatasourceImpl @Inject constructor(
                 FirebaseFirestoreException.Code.UNAVAILABLE -> DataError.PostError.UNAVAILABLE
                 else -> DataError.PostError.UNKNOWN
             }
+
             Result.Error(error)
         } catch (e: Exception) {
             Log.e(TAG, "Error adding post", e)
@@ -48,6 +49,7 @@ class PostsRemoteDatasourceImpl @Inject constructor(
 
                         else -> DataError.PostError.UNKNOWN
                     }
+
                     trySend(Result.Error(postError))
 
                     return@addSnapshotListener

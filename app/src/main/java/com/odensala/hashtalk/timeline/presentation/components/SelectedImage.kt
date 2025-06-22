@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.odensala.hashtalk.R
+import com.odensala.hashtalk.core.presentation.theme.paddingMedium
 
 @Composable
 fun SelectedImage(imageUri: Uri, onRemove: () -> Unit, modifier: Modifier = Modifier) {
@@ -29,14 +30,14 @@ fun SelectedImage(imageUri: Uri, onRemove: () -> Unit, modifier: Modifier = Modi
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(200.dp)
-                .padding(16.dp)
+                .padding(paddingMedium)
                 .clip(RoundedCornerShape(16.dp))
         )
         IconButton(
             onClick = onRemove,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(16.dp)
+                .padding(paddingMedium)
         ) {
             Icon(Icons.Default.Close, contentDescription = stringResource(R.string.remove_image))
         }

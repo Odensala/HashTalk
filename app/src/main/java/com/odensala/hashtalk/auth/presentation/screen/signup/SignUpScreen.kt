@@ -31,6 +31,7 @@ import com.odensala.hashtalk.auth.presentation.screen.signup.error.GeneralSignUp
 import com.odensala.hashtalk.auth.presentation.screen.signup.error.PasswordFieldError
 import com.odensala.hashtalk.core.presentation.components.ErrorMessage
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
+import com.odensala.hashtalk.core.presentation.theme.paddingMedium
 
 @Composable
 fun SignUpScreen(viewModel: SignUpViewModel = hiltViewModel(), onNavigateBack: () -> Unit) {
@@ -79,7 +80,7 @@ fun SignUpContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(16.dp),
+                .padding(paddingMedium),
             verticalArrangement = Arrangement.Center
         ) {
             Text(stringResource(R.string.sign_up), style = MaterialTheme.typography.headlineLarge)

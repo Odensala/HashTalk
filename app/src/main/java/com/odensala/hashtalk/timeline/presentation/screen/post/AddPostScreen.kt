@@ -27,10 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.odensala.hashtalk.R
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
+import com.odensala.hashtalk.core.presentation.theme.paddingMedium
 import com.odensala.hashtalk.timeline.domain.POST_MAX_CHAR
 import com.odensala.hashtalk.timeline.presentation.components.AddPostTextField
 import com.odensala.hashtalk.timeline.presentation.components.SelectedImage
@@ -112,7 +112,7 @@ fun AddPostContent(
                             )
                         )
                     },
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(paddingMedium)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Image,
@@ -126,7 +126,7 @@ fun AddPostContent(
                     onClick = {
                         onPostSubmit(uiState.postContent)
                     },
-                    modifier = Modifier.padding(end = 16.dp),
+                    modifier = Modifier.padding(end = paddingMedium),
                     text = stringResource(R.string.post_button_text)
                 )
             }
@@ -151,7 +151,7 @@ fun AddPostContent(
             text = "${uiState.postContent.length} / $POST_MAX_CHAR",
             modifier = Modifier
                 .align(Alignment.End)
-                .padding(16.dp)
+                .padding(paddingMedium)
         )
 
         uiState.postError?.let { error ->

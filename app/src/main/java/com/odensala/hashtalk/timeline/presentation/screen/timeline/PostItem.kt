@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.google.firebase.Timestamp
 import com.odensala.hashtalk.R
+import com.odensala.hashtalk.core.presentation.theme.paddingMedium
 import com.odensala.hashtalk.timeline.presentation.util.formatToDateString
 
 @Composable
@@ -32,7 +33,7 @@ fun PostItem(post: PostUiModel) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(paddingMedium)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

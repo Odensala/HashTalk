@@ -23,6 +23,7 @@ import com.odensala.hashtalk.auth.presentation.components.AuthTextField
 import com.odensala.hashtalk.auth.presentation.screen.login.error.AuthUiError
 import com.odensala.hashtalk.core.presentation.components.ErrorMessage
 import com.odensala.hashtalk.core.presentation.components.LoadingButton
+import com.odensala.hashtalk.core.presentation.theme.paddingMedium
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = hiltViewModel(), onNavigateToSignUp: () -> Unit) {
@@ -48,7 +49,7 @@ fun LoginContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(paddingMedium),
         verticalArrangement = Arrangement.Center
     ) {
         Text(stringResource(R.string.hash_talk), style = MaterialTheme.typography.headlineLarge)
