@@ -1,6 +1,6 @@
 package com.odensala.hashtalk.auth.presentation.screen.login
 
-import com.odensala.hashtalk.auth.presentation.error.AuthUiError
+import com.odensala.hashtalk.auth.presentation.screen.login.error.AuthUiError
 
 data class LoginUiState(
     val email: String = "",

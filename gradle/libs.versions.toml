@@ -16,9 +16,13 @@ hiltNavigationCompose = "1.2.0"
 firebase-bom = "33.15.0"
 google-services = "4.4.2"
 materialIconsExtended = "1.7.8"
+mockk = "1.13.10"
 navigation = "2.9.0"
+turbine = "1.2.0"
 viewModelCompose = "2.9.1"
 kotlinxSerialization = "1.8.0"
+truth = "1.4.4"
+coroutinesTest = "1.10.2"
 
 
 [libraries]
@@ -41,6 +45,7 @@ androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
 androidx-material3 = { module = "androidx.compose.material3:material3" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 
@@ -57,6 +62,11 @@ firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx", na
 
 # Coil
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+
+# Testing libraries
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
 
 [plugins]

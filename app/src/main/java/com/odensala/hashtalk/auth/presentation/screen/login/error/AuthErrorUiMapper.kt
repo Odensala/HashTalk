@@ -1,4 +1,4 @@
-package com.odensala.hashtalk.auth.presentation.error
+package com.odensala.hashtalk.auth.presentation.screen.login.error
 
 import com.odensala.hashtalk.core.domain.error.DataError
 
