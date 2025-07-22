@@ -23,11 +23,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.google.firebase.Timestamp
 import com.odensala.hashtalk.R
+import com.odensala.hashtalk.core.presentation.components.LoadingButton
 import com.odensala.hashtalk.core.presentation.theme.paddingMedium
 import com.odensala.hashtalk.timeline.presentation.util.formatToDateString
 
 @Composable
-fun PostItem(post: PostUiModel) {
+fun PostItem(post: PostUiModel, onDelete: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -76,6 +77,11 @@ fun PostItem(post: PostUiModel) {
                     contentScale = ContentScale.Crop
                 )
             }
+
+            LoadingButton(
+                onClick = { onDelete() },
+                text = stringResource(R.string.delete)
+            )
         }
     }
 }
@@ -91,6 +97,7 @@ fun PostItemPreview() {
             content = "This is a sample post content.",
             imageUrl = "https://example.com/image.jpg",
             timestamp = Timestamp.now()
-        )
+        ),
+        onDelete = { }
     )
 }

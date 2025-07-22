@@ -34,4 +34,9 @@ class PostsRepositoryImpl @Inject constructor(
             return Result.Error(DataError.PostError.PERMISSION_DENIED)
         }
     }
+
+    override suspend fun deletePost(postId: String): Result<Unit, DataError.PostError> {
+        val result = postsRemoteDataSource.deletePost(postId)
+        return result
+    }
 }

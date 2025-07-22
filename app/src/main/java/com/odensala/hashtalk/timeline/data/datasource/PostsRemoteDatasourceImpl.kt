@@ -16,7 +16,8 @@ import kotlinx.coroutines.tasks.await
 private const val TAG = "PostsRemoteDatasource"
 
 class PostsRemoteDatasourceImpl @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+
 ) : PostsRemoteDataSource {
 
     private val postsCollection = firestore.collection("posts")
@@ -68,5 +69,16 @@ class PostsRemoteDatasourceImpl @Inject constructor(
             }
 
         awaitClose { listener.remove() }
+    }
+
+    override suspend fun deletePost(postId: String): Result<Unit, DataError.PostError> {
+        postsCollection // top-level “posts” collection
+            .document(postId) // the post you’re removing
+            .delete()
+            .
+
+        // Log.d(TAG, "Post Deleted with id $postId")
+
+        return Result.Success(Unit)
     }
 }

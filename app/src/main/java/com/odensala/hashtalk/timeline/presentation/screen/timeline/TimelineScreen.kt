@@ -45,7 +45,8 @@ fun TimelineScreen(viewModel: TimelineViewModel = hiltViewModel(), onNavigateToA
     TimelineContent(
         uiState = uiState,
         onLogout = { showLogoutDialog = true },
-        onNavigateToAddPost = onNavigateToAddPost
+        onNavigateToAddPost = onNavigateToAddPost,
+        onDeletePost = { viewModel.deletePost(it) }
     )
 
     LogoutDialog(
@@ -64,7 +65,8 @@ fun TimelineContent(
     uiState: TimelineUiState,
     modifier: Modifier = Modifier,
     onLogout: () -> Unit = {},
-    onNavigateToAddPost: () -> Unit = {}
+    onNavigateToAddPost: () -> Unit = {},
+    onDeletePost: (postId: String) -> Unit
 ) {
     val listState = rememberLazyListState()
 
@@ -141,7 +143,7 @@ fun TimelineContent(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(uiState.posts, key = { it.id }) { post ->
-                            PostItem(post = post)
+                            PostItem(post = post, onDelete = { onDeletePost(post.id) })
                         }
                     }
                 }
@@ -167,6 +169,7 @@ fun PreviewTimelineScreen() {
                 )
             )
         ),
-        onNavigateToAddPost = {}
+        onNavigateToAddPost = {},
+        onDeletePost = {}
     )
 }

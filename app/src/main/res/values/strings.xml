@@ -41,4 +41,5 @@
     <string name="email_already_in_use_error">Email is already in use</string>
     <string name="generate_hash">Generate Hash</string>
     <string name="hash_button_text">Hash it!</string>
+    <string name="delete">Delete</string>
 </resources>

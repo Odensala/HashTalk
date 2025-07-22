@@ -8,6 +8,7 @@ import com.odensala.hashtalk.timeline.data.model.Post
 import com.odensala.hashtalk.timeline.domain.repository.PostsRepository
 import com.odensala.hashtalk.timeline.presentation.error.mapPostErrorToUi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +21,8 @@ class TimelineViewModel @Inject constructor(
     private val postsRepository: PostsRepository,
     private val authRepository: AuthRepository
 ) : ViewModel() {
+
+    val deleteSuccess: MutableStateFlow(false)
 
     val uiState: StateFlow<TimelineUiState> =
         postsRepository.posts
@@ -50,6 +53,12 @@ class TimelineViewModel @Inject constructor(
     fun logout() {
         viewModelScope.launch {
             authRepository.logout()
+        }
+    }
+
+    fun deletePost(postId: String) {
+        viewModelScope.launch {
+             val result = postsRepository.deletePost(postId)
         }
     }
 
